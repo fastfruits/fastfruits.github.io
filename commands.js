@@ -5,16 +5,16 @@ var email = 'mailto:nichoias.henry1006@gmail.com';
 
 help = [
   "<br>",
-  '<span class="command">whois</span>          Who Is Nicholas Henry?',
-  '<span class="command">techstack</span>      My Languages And Libraries',
-  '<span class="command">internships</span>    Real World Experience',
-  '<span class="command">projects</span>       View My Projects',
-  '<span class="command">socials</span>        Display Social Links',
-  '<span class="command">email</span>          Contact Through Email',
+  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(whois, \'color2\', 50)">whois</span>          Who Is Nicholas Henry?',
+  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(skills, \'color2\', 50)">techstack</span>      My Languages And Libraries',
+  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(internships, \'color2\', 50)">internships</span>    Real World Experience',
+  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(projects, \'color2\', 50)">projects</span>       View My Projects',
+  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(socials, \'color2\', 50)">socials</span>        Display Social Links',
+  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(email, \'color2\', 50); newtab(email)">email</span>          Contact Through Email',
   '<span class="command">light/dark</span>     Changes The Theme Of The Terminal',
-  '<span class="command">banner</span>         Display The Header Again',
-  '<span class="command">history</span>        View Command History',
-  '<span class="command">clear</span>          Clear The Terminal',
+  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(banner, \'color2\', 50)">banner</span>         Display The Header Again',
+  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(history, \'color2\', 50)">history</span>        View Command History',
+  '<span class="command" onclick="setTimeout(function() {terminal.innerHTML = \'\<a id="before"\>\<\/a\>\';before = document.getElementById("before");}, 1);">clear</span>          Clear The Terminal',
   "<br>",
 ];
 
@@ -111,7 +111,7 @@ projects = [
   '<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(news, \'\', 80)">Daily News Compiler[WIP]</a>',
   '<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(wateralarm, \'\', 80)">Water Alarm Clock[WIP]</a>',
   "<br>",
-  '<span class="command">Commands(or clickable btw^):</span>                   portfolio, aiAPI, ai, rpg, av, benchmark, dispenser, jarvis, news, wateralarm',
+  '<span class="command">Commands(or clickable btw^):</span>                   portfolio, aiAPI, ai, rpg, av, benchmark, sanitizer, jarvis, news, wateralarm',
   "<br>"
 ];
 
@@ -122,6 +122,12 @@ socials = [
   '<span class="command">linkedin</span>       <a href="' + linkedin + '" target="_blank">linkedin.com' + "</a>",
   "<br>"
 ]; 
+
+email = [
+  "<br>",
+  'Emailing <a href="mailto:nichoias.henry1006@gmail.com">nichoias.henry1006@gmail.com</a>...',
+  "<br>"
+]
 
 portfolio = [
   "<br>",
