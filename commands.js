@@ -1,20 +1,20 @@
 var linkedin = "https://www.linkedin.com/in/nicholas-henry-57b325283/";
 var github = "https://github.com/fastfruits";
 var instagram = "https://instagram.com/n.henry06"
-var email = 'mailto:nichoias.henry1006@gmail.com';
+var email = 'mailto:nicholasahenry06@gmail.com';
 
 help = [
   "<br>",
-  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(whois, \'color2\', 50)">whois</span>          Who Is Nicholas Henry?',
-  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(skills, \'color2\', 50)">techstack</span>      My Languages And Libraries',
-  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(internships, \'color2\', 50)">internships</span>    Real World Experience',
-  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(projects, \'color2\', 50)">projects</span>       View My Projects',
-  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(socials, \'color2\', 50)">socials</span>        Display Social Links',
-  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(email, \'color2\', 50); newtab(email)">email</span>          Contact Through Email',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(whois, \'color2\', 50)">whois</a>          Who Is Nicholas Henry?',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(skills, \'color2\', 50)">techstack</a>      My Languages And Libraries',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(internships, \'color2\', 50)">internships</a>    Real World Experience',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(projects, \'color2\', 50)">projects</a>       View My Projects',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(socials, \'color2\', 50)">socials</a>        Display Social Links',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(email, \'color2\', 50); newtab(email)">email</a>          Contact Through Email',
   '<span class="command">light/dark</span>     Changes The Theme Of The Terminal',
-  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(banner, \'color2\', 50)">banner</span>         Display The Header Again',
-  '<span class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(history, \'color2\', 50)">history</span>        View Command History',
-  '<span class="command" onclick="setTimeout(function() {terminal.innerHTML = \'\<a id="before"\>\<\/a\>\';before = document.getElementById("before");}, 1);">clear</span>          Clear The Terminal',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(banner, \'color2\', 50)">banner</a>         Display The Header Again',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(history, \'color2\', 50)">history</a>        View Command History',
+  '<span class="command">clear</span>          Clear The Terminal',
   "<br>",
 ];
 
@@ -117,9 +117,9 @@ projects = [
 
 socials = [
   "<br>",
-  '<span class="command">instagram</span>      <a href="' + instagram + '" target="_blank">instagram.com' + "</a>",
-  '<span class="command">github</span>         <a href="' + github + '" target="_blank">github.com' + "</a>",
-  '<span class="command">linkedin</span>       <a href="' + linkedin + '" target="_blank">linkedin.com' + "</a>",
+  '<a class="command" href="' + instagram + '" target="_blank">instagram</a>',
+  '<a class="command" href="' + github + '" target="_blank">github</a>',
+  '<a class="command" href="' + linkedin + '" target="_blank">linkedin</a>',
   "<br>"
 ]; 
 
@@ -319,7 +319,7 @@ banner = [
   ,"            *********************** #*****     " + '<span class="color2">\\_\\ \\/\\/ /_/ \\___|_| |_|_|   \\__, | (_) \\__,_|\\___| \\_/  ',
   ,"             ************************                                       " + '<span class="color2">|___/                   ',
   '<span class="color2">Welcome to my interactive web terminal.</span>',
-  "<span class=\"color2\">For a list of available commands, type</span> <span class=\"command\">'help'</span><span class=\"color2\">.</span>",
+  "<span class=\"color2\">For a list of available commands, type (or click) '</span><a class=\"command\" onclick=\"addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(help, \'color2\', 50)\">help</a><span class=\"color2\">'.</span>",
 ]
 
 light = [
