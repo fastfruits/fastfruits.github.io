@@ -22,7 +22,7 @@ whois = [
   "<br>",
   "Hi I'm Nicholas Henry",
   "<br>",
-  " I am currently a incoming freshman at Northeastern University studying mechanical engineering and computer science.",
+  " I am currently a freshman at Northeastern University studying mechanical engineering and computer science. I even am studying abroad for my first semester at Queen's University in Northern Ireland",
   " I started programming after getting a RaspberryPi 3 as a gift and then really took off after picking up AP Computer Science A at my school in which",
   " I learned a lot about Java and OOP and had a great teacher who instilled good programming practices and skills through creativity driven projects.",
   "<br>",
@@ -33,7 +33,7 @@ whois = [
   " web development like HTML/CSS, Javascript, and libraries like React and Vite to connect frontend to backend.",
   " After the internship I started learning C# and have won my school coding club's Hack-A-Thon and GameJam and made this website.",
   "<br>",
-  "Thanks for visiting my site!",
+  "Thanks for visiting my site and feel free to reach out!",
   "                           -Nicholas Henry",
   "<br>"
 ];
@@ -82,19 +82,19 @@ skills = [
 
 internships = [
   "<br>",
-  '<a class="command" href="aicamp.org" target="_blank">AICamp</a> - Web Developer Intern',
-  "<br>",
-  "   - Was a web developer intern for AICamp in which I created additions for the website and organization of it",
-  "   - Worked on creating new a part of the site to host their computer vision AI summer camps on the site instead of needed a instructor",
-  "   - Was the team manager of the five person team in which I lead update meetings and worked with the coding and content team together",
-  "   - Used HTML, Tailwind CSS, JavaScript, Vite.js, and React.js to create the site's additions",
-  "<br>",
   '<a class="command" href="seoneeded.com" target="_blank">SEONeeded</a> - SEO Assistant Intern',
   "<br>",
   "   - Worked as an SEO assistant intern for SEONeeded through the MDCPS(Miami-Dade County Public Schools) Summer Internship Program",
   "   - Learned a lot about the way search engines prioritize search results and how to boost sites to the top of the lists organically and locally",
   "   - Mainly did keyword research, blog creation, and social media posting for SEONeeded and The4thSister for the duration of the internship",
   "   - Used technologies like WordPress, SEOMoz, and Meta business suite for the tasks I was assigned.",
+  "<br>",
+  '<a class="command" href="aicamp.org" target="_blank">AICamp</a> - Web Developer Intern',
+  "<br>",
+  "   - Was a web developer intern for AICamp in which I created additions for the website and organization of it",
+  "   - Worked on creating new a part of the site to host their computer vision AI summer camps on the site instead of needed a instructor",
+  "   - Was the team manager of the five person team in which I lead update meetings and worked with the coding and content team together",
+  "   - Used HTML, Tailwind CSS, JavaScript, Vite.js, and React.js to create the site's additions",
   "<br>"
 ]
 
@@ -107,19 +107,20 @@ projects = [
   '<a class="command" id="av" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(av, \'\', 80)">Ten80 AV Car</a>                Wrote scripts in python for my school\'s Ten80 AV Car',
   '<a class="command" id="benchmark" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(benchmark, \'\', 80)">Human Benchmark Test</a>        Submission for my school club\'s Hack-A-Thon coded in Java',
   '<a class="command" id="sanitizer" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(sanitizer, \'\', 80)">Auto Sanitizer Dispenser</a>    Engineering class project to create a contactless sanitizer dispenser',
+  '<a class="command" id="sheep" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(sheep, \'\', 80)">Sheep Finder[WIP]</a>',
   '<a class="command" id="jarvis" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(jarvis, \'\', 80)">Jarvis Discord Bot[WIP]</a>',
   '<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(news, \'\', 80)">Daily News Compiler[WIP]</a>',
-  '<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(wateralarm, \'\', 80)">Water Alarm Clock[WIP]</a>',
+  //'<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(wateralarm, \'\', 80)">Water Alarm Clock[WIP]</a>',
   "<br>",
-  '<span class="command">Commands(or clickable btw^):</span>                   portfolio, aiAPI, ai, rpg, av, benchmark, sanitizer, jarvis, news, wateralarm',
+  '<span class="command">Commands(or clickable btw^):</span>                   portfolio, aiAPI, ai, rpg, av, benchmark, sanitizer, sheepfinder, jarvis, news',
   "<br>"
 ];
 
 socials = [
   "<br>",
-  '<a class="command" href="' + instagram + '" target="_blank">instagram</a>',
   '<a class="command" href="' + github + '" target="_blank">github</a>',
   '<a class="command" href="' + linkedin + '" target="_blank">linkedin</a>',
+  '<a class="command" href="' + instagram + '" target="_blank">instagram</a>',
   "<br>"
 ]; 
 
@@ -133,7 +134,7 @@ portfolio = [
   "<br>",
   '<span class="command">Portfolio Website</span>',
   "<br>",
-  "       -This very website which I programmed with HTML/CSS and Javascript to show off my portfolio and web development skills like responsiveness and functionality.",
+  '       -This very website which I programmed with HTML/CSS and Javascript to show off my portfolio and web development skills like responsiveness and functionality.',
   "        With this project I increased my knowledge of HTML, CSS, and Javascript and how to use them to create a website that is interesting and usable as a portfolio.", 
   "<br>",
   'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/Website" target="_blank">Repository</a>',
@@ -252,6 +253,18 @@ wateralarm = [
   'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/Water-Alarm-Clock" target="_blank">Repository</a>',
   "<br>"
 ];
+
+sheep = [
+  "<br>",
+  '<span class="command">Sheep Finder[WIP]</span>',
+  "<br>",
+  "     -After studying abroad in Northern Ireland I spotted a problem. Farmers and runaway sheep. I am making a mobile app that serves to help farmers with this problem.",
+  "     -Community members who come across a runaway sheep can upload an image of the sheep and describe its markings. Then farmers who are signed up and have sheep with",
+  "     those markings will be notified of the sheep and its location so they can pick it up back to the farm",
+  "<br>",
+  'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/sheep-finder targer="_blank">Repository</a>',
+  "<br>"
+]
 
 aiDemo = [
   "<br>",
