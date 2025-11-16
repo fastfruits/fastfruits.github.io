@@ -121,6 +121,9 @@ function commander(cmd) {
         case "dispenser":
             writeLines(sanitizer, "color2 margin", 50);
         break;
+        case "sheepfinder":
+            writeLines(sheep, "color2 margin", 50);
+            break;
         case "history":
             addLine("<br>", "", 0);
             writeLines(commands, "color2", 50);
