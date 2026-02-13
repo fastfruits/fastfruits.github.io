@@ -85,6 +85,9 @@ function commander(cmd) {
         case "techstack":
             writeLines(skills, "color2 margin", 50)
         break;
+        case "activities":
+            writeLines(activities, "color2 margin",50)
+        break;
         case "internships":
             writeLines(internships, "color2 margin", 50);
         break;
@@ -128,10 +131,6 @@ function commander(cmd) {
             addLine("<br>", "", 0);
             writeLines(commands, "color2", 50);
             addLine("<br>", "command", 80 * commands.length + 50);
-        break;
-        case "email":
-            addLine('Emailing <a href="mailto:nichoias.henry1006@gmail.com">nichoias.henry1006@gmail.com</a>...', "color2", 50);
-            newTab(email);
         break;
         case "clear":
             setTimeout(function() {

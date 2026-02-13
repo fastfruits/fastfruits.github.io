@@ -7,6 +7,7 @@ help = [
   "<br>",
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(whois, \'color2\', 50)">whois</a>          Who Is Nicholas Henry?',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(skills, \'color2\', 50)">techstack</a>      My Languages And Libraries',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(activities, \'color2\', 50)">activities</a>    Clubs and other',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(internships, \'color2\', 50)">internships</a>    Real World Experience',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(projects, \'color2\', 50)">projects</a>       View My Projects',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(socials, \'color2\', 50)">socials</a>        Display Social Links',
@@ -78,6 +79,12 @@ skills = [
   "   -More work with machine learning and Tensorflow",
   "   -C++",
   "<br>"
+]
+
+activities = [
+  "<br>",
+  '<span>',
+  "<br>",
 ]
 
 internships = [
