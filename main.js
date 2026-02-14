@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }, 100);
             }, 500);
         } else {
-            width += 25;
+            width += 33.34;
             loadingBar.style.width = width + '%';
         }
     }

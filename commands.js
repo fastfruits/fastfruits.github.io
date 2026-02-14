@@ -1,7 +1,7 @@
-var linkedin = "https://www.linkedin.com/in/nicholas-henry-57b325283/";
-var github = "https://github.com/fastfruits";
+var linkedin = "https://www.linkedin.com/in/nahenry06/"
+var github = "https://github.com/fastfruits"
 var instagram = "https://instagram.com/n.henry06"
-var email = 'mailto:nicholasahenry06@gmail.com';
+var email = "mailto:nicholasahenry06@gmail.com"
 
 help = [
   "<br>",
@@ -11,95 +11,109 @@ help = [
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(internships, \'color2\', 50)">internships</a>    Real World Experience',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(projects, \'color2\', 50)">projects</a>       View My Projects',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(socials, \'color2\', 50)">socials</a>        Display Social Links',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(email, \'color2\', 50); newtab(email)">email</a>          Contact Through Email',
-  '<span class="command">light/dark</span>     Changes The Theme Of The Terminal',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(banner, \'color2\', 50)">banner</a>         Display The Header Again',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(history, \'color2\', 50)">history</a>        View Command History',
+  '<span class="command">light/dark</span>     Changes The Theme Of The Terminal',
   '<span class="command">clear</span>          Clear The Terminal',
   "<br>",
-];
+]
 
 whois = [
   "<br>",
   "Hi I'm Nicholas Henry",
   "<br>",
-  " I am currently a freshman at Northeastern University studying mechanical engineering and computer science. I even am studying abroad for my first semester at Queen's University in Northern Ireland",
-  " I started programming after getting a RaspberryPi 3 as a gift and then really took off after picking up AP Computer Science A at my school in which",
-  " I learned a lot about Java and OOP and had a great teacher who instilled good programming practices and skills through creativity driven projects.",
+  " I am currently a freshman at Northeastern University studying mechanical engineering and computer science looking for an internship for summer 2026 or co-ops for next spring.",
+  " I studied abroad for my first semester at Queen's University in Northern Ireland through NU.IN and gained a ton of independence",
+  " Now on the Boston campus I am participating in clubs like NER and SEDS and excelling in my studies with a GPA of 3.94",
   "<br>",
-  " After passing my class with flying colors I continued to program and strived to learn new skills which I did through AICamp.org",
-  " In their summer camp I programmed and trained an AI model with python, tensorflow, and Google's API which taught me a lot.",
+  "A little bit about my past",
+  "I am a first generation American with citizenship in Russia and Ireland too and I grew up in Miami, FL",
+  " After going through AP Computer Science A in high school I continued to program and strived to learn new skills which I did through AICamp.org",
+  " In their summer camp I programmed and trained an AI model with python, tensorflow, and some Google APIs which taught me a lot",
   "<br>",
   " After the camp they called me back after seeing my work and asked me to intern for them which I did and this taught me a lot of",
-  " web development like HTML/CSS, Javascript, and libraries like React and Vite to connect frontend to backend.",
-  " After the internship I started learning C# and have won my school coding club's Hack-A-Thon and GameJam and made this website.",
+  " web development like HTML/CSS, Javascript, and libraries like React and Vite to connect frontend to backend",
+  " After the internship I started learning C# and won my high school coding club's Hack-A-Thon and GameJam and made this website",
   "<br>",
-  "Thanks for visiting my site and feel free to reach out!",
+  "Thank you for visiting my site and feel free to reach out if you have opportunities!",
   "                           -Nicholas Henry",
-  "<br>"
-];
+  "<br>",
+]
 
 skills = [
   "<br>",
   '<span class="command">Programming Languages</span>',
   "<br>",
-  "   -Java: ",
-  "         *Learned through my AP Computer Science class and the projects assigned by my teacher",
-  "         which were very beneficial as they were structured in a way that allowed creativity and freedom.",
-  "         *Experienced in developing computer applications, games, and other types of programs.",
-  "         *Have a lot of work with Java GUI like swing and JOP libraries.",
   "   -Python: ",
-  "         *Learned through self teaching, videos, and projects.",
-  "         *Skilled in machine learning, web scraping, automation, and working with robotics.",
-  "         *Mainly used for my school club's Ten80 AV car which used a micro controller and sensors like an odometer, IR, and ultrasonic.",
+  "         *Learned through videos and projects",
+  "         *Skilled in machine learning, web scraping, automation, and robotics",
+  "         *Use in both of my clubs NER and SEDS for different applications",
+  "   -Java: ",
+  "         *Learned through my AP Computer Science class and the projects",
+  "         *Experienced in developing computer applications, games, and other types of programs",
   "   -C#: ",
-  "         *Learned through the freecodecamp.org C# certification course and self-driven projects.",
-  "         *This is the language I'm least experienced in but have created applications and small games in the Unity Engine.",
+  "         *Learned through the freecodecamp.org C# certification course",
   "<br>",
   '<span class="command">Web Development</span>',
   "<br>",
   "   -HTML & CSS: ",
-  "         *Learned through self teaching, videos and creating websites like this and my internship for AICamp.org.",
-  "         *Strong understanding of web design principles and responsive design techniques.",
+  "         *Learned through videos and creating websites like this and my internship for AICamp.org",
+  "         *Strong understanding of web design principles and responsive design techniques",
   "   -JavaScript: ",
-  "         *Learned through self teaching, videos and creating websites like this and my internship for AICamp.org.",
-  "         *Adept at creating dynamic and interactive web applications using vanilla JavaScript.",
-  "         *Able to also work with frameworks and libraries like React and Vite",
+  "         *Learned through videos and creating websites like this and my internship for AICamp.org",
+  "         *Adept at creating dynamic and interactive web applications using JavaScript",
+  "         *Also work with frameworks and libraries like React and Vite",
   "<br>",
   '<span class="command">Certifications</span>',
   "   -CAD and 3D Printing",
-  "         *Learned these skills in my school's engineering classes and employed these skills throughout on projects like the AV car.",
-  "         *Have certifications for programs like Fusion360, OnShape, and MakerBot 3D printers.",
+  "         *Learned these skills through engineering classes and employed these skills throughout on projects like the AV car and sanitizer",
+  "         *Have certifications for programs like Fusion360, OnShape, and MakerBot 3D printers",
   "   -Engineering",
-  "         *Learned engineering skills and practices also through my engineering classes at school and through projects.",
-  "         *Certified by the RECF(Robotics Education & Competition Foundation) for Robotics and Pre-Engineering.",
+  "         *Learned engineering skills and practices also through my engineering classes at school and through projects",
+  "         *Certified by the RECF(Robotics Education & Competition Foundation) for Robotics and Pre-Engineering",
   "<br>",
   '<span class="command">Future Skills To Learn</span>',
   "<br>",
-  "   -More work with machine learning and Tensorflow",
   "   -C++",
+  "   -ROS 2",
+  "   -Mobile App Development",
   "<br>"
 ]
 
 activities = [
   "<br>",
-  '<span>',
+  '<a class="command">Northeastern Electric Racing (NER)</a> - SWE for the simulation team',
   "<br>",
+  "   - Working on a team of two to develop a multi-body simulation tool for NER to test and examine changes to",
+  "     vehicle, suspension, and tire variables and their effect on speed and times of the car",
+  "   - Use Python as the backend to do all the physics and Dash Plotly to display to a site to easily see all graphs and metrics",
+  "   - Learnt to work with other departments to find out what each person needed to better develop the car they were building",
+  "<br>",
+  '<a class="command">Students for the Exploration and Discovery of Space</a> - SWE for NEST (Network Exploration Swarm Toolkit',
+  "<br>",
+  "   - NEST is a project to create a swarm of miniature C.O.B.R.A. (Crater Observing Bio-inspired Rolling Articulator)",
+  "    \"snake\" robots to explore and develop multi-agent collaboration in order to complete teamwork based tasks",
+  "   - Specifically working on the basic controls of the robots and imitation learning for the COBRA to work “together” with a",
+  "     robotic grabber arm from ROBOTIS to complete tasks together autonomously",
+  "   - Used Python to program the robots and simulation software and ROS 2 to communicate with sensors and relay information and instructions",
+  "<br>"
 ]
 
 internships = [
   "<br>",
-  '<a class="command" href="seoneeded.com" target="_blank">SEONeeded</a> - SEO Assistant Intern',
+  '<a class="command" href="seoneeded.com" target="_blank">SEONeeded</a> - Search Engine Optimization Assistant Intern --> SEO and GEO Assistant',
   "<br>",
-  "   - Worked as an SEO assistant intern for SEONeeded through the MDCPS(Miami-Dade County Public Schools) Summer Internship Program",
+  "   - Returned to SEONeeded Oct 2025 after being contacted by my old boss about an opportunity and took it up",
+  "   - Gained a lot more tasks and work directly with 15+ unique South Florida Region clients in all sorts of industries",
+  "<br>",
+  "   - Worked as an SEO assistant intern for SEONeeded through the MDCPS Summer Internship Program",
   "   - Learned a lot about the way search engines prioritize search results and how to boost sites to the top of the lists organically and locally",
-  "   - Mainly did keyword research, blog creation, and social media posting for SEONeeded and The4thSister for the duration of the internship",
-  "   - Used technologies like WordPress, SEOMoz, and Meta business suite for the tasks I was assigned.",
+  "   - Used technologies like WordPress, SEOMoz, and Meta business suite for the tasks I was assigned",
   "<br>",
   '<a class="command" href="aicamp.org" target="_blank">AICamp</a> - Web Developer Intern',
   "<br>",
   "   - Was a web developer intern for AICamp in which I created additions for the website and organization of it",
-  "   - Worked on creating new a part of the site to host their computer vision AI summer camps on the site instead of needed a instructor",
+  "   - Worked on creating new a part of the site to host their computer vision AI camps not only during the summer time",
   "   - Was the team manager of the five person team in which I lead update meetings and worked with the coding and content team together",
   "   - Used HTML, Tailwind CSS, JavaScript, Vite.js, and React.js to create the site's additions",
   "<br>"
@@ -115,11 +129,11 @@ projects = [
   '<a class="command" id="benchmark" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(benchmark, \'\', 80)">Human Benchmark Test</a>        Submission for my school club\'s Hack-A-Thon coded in Java',
   '<a class="command" id="sanitizer" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(sanitizer, \'\', 80)">Auto Sanitizer Dispenser</a>    Engineering class project to create a contactless sanitizer dispenser',
   '<a class="command" id="sheep" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(sheep, \'\', 80)">Sheep Finder[WIP]</a>',
-  '<a class="command" id="jarvis" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(jarvis, \'\', 80)">Jarvis Discord Bot[WIP]</a>',
-  '<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(news, \'\', 80)">Daily News Compiler[WIP]</a>',
+  //'<a class="command" id="jarvis" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(jarvis, \'\', 80)">Jarvis Discord Bot[WIP]</a>',
+  //'<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(news, \'\', 80)">Daily News Compiler[WIP]</a>',
   //'<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(wateralarm, \'\', 80)">Water Alarm Clock[WIP]</a>',
   "<br>",
-  '<span class="command">Commands(or clickable btw^):</span>                   portfolio, aiAPI, ai, rpg, av, benchmark, sanitizer, sheepfinder, jarvis, news',
+  '<span class="command">Commands(or clickable btw^):</span>                   portfolio, aiAPI, ai, rpg, av, benchmark, sanitizer, sheepfinder',
   "<br>"
 ];
 
@@ -128,14 +142,9 @@ socials = [
   '<a class="command" href="' + github + '" target="_blank">github</a>',
   '<a class="command" href="' + linkedin + '" target="_blank">linkedin</a>',
   '<a class="command" href="' + instagram + '" target="_blank">instagram</a>',
+  '<a class="command" href="' + email + '" target="_blank">email</a>',
   "<br>"
-]; 
-
-email = [
-  "<br>",
-  'Emailing <a href="mailto:nichoias.henry1006@gmail.com">nichoias.henry1006@gmail.com</a>...',
-  "<br>"
-]
+] 
 
 portfolio = [
   "<br>",
@@ -146,7 +155,7 @@ portfolio = [
   "<br>",
   'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/Website" target="_blank">Repository</a>',
   "<br>"
-];
+]
 
 aiAPI = [
   "<br>",
@@ -197,7 +206,7 @@ ai = [
   //'Click for a <a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(aiDemo, \'\', 80)">Demo</a>',
   'Check out the code here on GitHub -----> <a class="command" href="https://github.com/panyang05/Text-Transcriber" target="_blank">Repository</a>',
   "<br>"
-];
+]
 
 rpg = [
   "<br>",
@@ -210,7 +219,7 @@ rpg = [
   'Click for a <a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(rpgDemo, \'\', 80)">Demo</a>',
   'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/Medieval-RPG" target="_blank">Repository</a>',
   "<br>"
-];
+]
 
 av = [
   "<br>",
@@ -222,7 +231,7 @@ av = [
   "<br>",
   'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/AutonomousVehicle_Ten802023-2024" target="_blank">Repository</a>',
   "</br>"
-];
+]
 
 benchmark = [
   "<br>",
@@ -234,7 +243,7 @@ benchmark = [
   'Click for a <a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(benchmarkDemo, \'\', 80)">Demo</a>',
   'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/Benchmark-Test" target="_blank">Repository</a>',
   "<br>"
-];
+]
 
 sanitizer = [
 "</br>",
@@ -259,7 +268,7 @@ wateralarm = [
   //'Click for a <a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(jarvisDemo, \'\', 80)">Demo</a>',
   'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/Water-Alarm-Clock" target="_blank">Repository</a>',
   "<br>"
-];
+]
 
 sheep = [
   "<br>",
