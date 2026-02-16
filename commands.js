@@ -9,14 +9,13 @@ help = [
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(skills, \'color2\', 50)">techstack</a>      My Languages And Libraries',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(activities, \'color2\', 50)">activities</a>     Clubs and other',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(internships, \'color2\', 50)">internships</a>    Real World Experience',
-  '<span class="command">comments</span>       View Visitor Comments',
-  '<span class="command">comment</span>        Add Comment: comment name | short message',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> comments\', \'no-animation\', 0); commander(\'comments\')">comments</a>       View and add comments',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(projects, \'color2\', 50)">projects</a>       View My Projects',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(socials, \'color2\', 50)">socials</a>        Display Social Links',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(banner, \'color2\', 50)">banner</a>         Display The Header Again',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(banner, \'color2\', 50)">banner</a>         Display The Header',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(history, \'color2\', 50)">history</a>        View Command History',
-  '<span class="command">light/dark</span>     Changes The Theme Of The Terminal',
-  '<span class="command">clear</span>          Clear The Terminal',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> light\', \'no-animation\', 0); commander(\'light\')">light</a>/<a class="command" onclick="addLine(\'X:\\Users\\Guest> dark\', \'no-animation\', 0); commander(\'dark\')">dark</a>     Changes The Theme Of The Terminal',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> clear\', \'no-animation\', 0); commander(\'clear\')">clear</a>          Clear The Terminal',
   "<br>",
 ]
 
