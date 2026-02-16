@@ -1,230 +1,401 @@
-var before = getEl("before");
-var liner = getEl("liner");
-var command = getEl("typer"); 
-var textarea = getEl("texter"); 
-var terminal = getEl("terminal");
-var mainContent = getEl("main-content");
-var body = getEl("body");
+var before = getEl("before")
+var liner = getEl("liner")
+var command = getEl("typer")
+var textarea = getEl("texter")
+var terminal = getEl("terminal")
+var mainContent = getEl("main-content")
+var body = getEl("body")
 
-var git = 0;
-var commands = [];
+var SUPABASE_URL = "https://zkodgtygleehzklkjsvc.supabase.co"
+var SUPABASE_ANON_KEY = "sb_publishable_zjID95Jk3779QiYrj_fPWw_ltxakTQk"
+var COMMENT_COOLDOWN_MS = 20000
+var LAST_COMMENT_AT_KEY = "last-comment-at-v1"
+
+var git = 0
+var commands = []
 
 document.addEventListener("DOMContentLoaded", function() {
-    var loadingBar = getEl("loading-bar");
-    var loadingText = getEl("loading-text");
-    var loadingContainer = getEl("loading-container");
-    var width = 0;
+    var loadingBar = getEl("loading-bar")
+    var loadingText = getEl("loading-text")
+    var loadingContainer = getEl("loading-container")
+    var width = 0
 
     function load() {
         if (width >= 100) {
 
-            clearInterval(interval);
-            loadingText.textContent = "Complete";
+            clearInterval(interval)
+            loadingText.textContent = "Complete"
             setTimeout(function() {
-                document.body.classList.remove('loading');
-                loadingContainer.style.display = 'none';
-                getEl("webTitle").style.display = 'none';
-                mainContent.style.display = 'block';
+                document.body.classList.remove('loading')
+                loadingContainer.style.display = 'none'
+                getEl("webTitle").style.display = 'none'
+                mainContent.style.display = 'block'
                 setTimeout(function() {
-                    writeLines(banner, "", 20);
-                    textarea.focus();
-                }, 100);
-            }, 500);
+                    writeLines(banner, "", 20)
+                    textarea.focus()
+                }, 100)
+            }, 500)
         } else {
-            width += 33.34;
-            loadingBar.style.width = width + '%';
+            width += 33.34
+            loadingBar.style.width = width + '%'
         }
     }
-    var interval = setInterval(load, 500);
-});
+    var interval = setInterval(load, 500)
+})
 
-window.addEventListener("keyup", enterKey);
+window.addEventListener("keyup", enterKey)
 
-textarea.value = "";
-command.innerHTML = textarea.value;
+textarea.value = ""
+command.innerHTML = textarea.value
 
 function enterKey(e) {
+    if (document.activeElement !== textarea) {
+        return
+    }
+
     if (e.keyCode == 181) {
-        document.location.reload(true);
+        document.location.reload(true)
     }
     else {
         if (e.keyCode == 13) {
-            commands.push(command.innerHTML);
-            git = commands.length;
-            addLine("X:\\Users\\Guest> " + command.innerHTML, "no-animation", 0);
-            commander(command.innerHTML.toLowerCase());
-            command.innerHTML = "";
-            textarea.value = "";
+            commands.push(command.innerHTML)
+            git = commands.length
+            addLine("X:\\Users\\Guest> " + command.innerHTML, "no-animation", 0)
+            commander(command.innerHTML)
+            command.innerHTML = ""
+            textarea.value = ""
         }
         if (e.keyCode == 38 && git != 0) {
-            git -= 1;
-            textarea.value = commands[git];
-            command.innerHTML = textarea.value;
+            git -= 1
+            textarea.value = commands[git]
+            command.innerHTML = textarea.value
         }
         if (e.keyCode == 40 && git != commands.length) {
-            git += 1;
+            git += 1
             if (commands[git] === undefined) {
-                textarea.value = "";
+                textarea.value = ""
             } 
             else {
-                textarea.value = commands[git];
+                textarea.value = commands[git]
             }
-        command.innerHTML = textarea.value;
+        command.innerHTML = textarea.value
         }
     }
 }
 
 function commander(cmd) {
-    switch (cmd.trimEnd().toLowerCase()) {
+    var trimmedCmd = cmd.trim()
+    var normalizedCmd = trimmedCmd.toLowerCase()
+
+    if (normalizedCmd.startsWith("comment ")) {
+        saveComment(trimmedCmd.slice(8))
+        return
+    }
+
+    switch (normalizedCmd) {
         case "help":
-            writeLines(help, "color2 margin", 50);
-        break;
+            writeLines(help, "color2 margin", 50)
+        break
         case "whois":
-            writeLines(whois, "color2 margin", 50);
-        break;
+            writeLines(whois, "color2 margin", 50)
+        break
         case "techstack":
             writeLines(skills, "color2 margin", 50)
-        break;
+        break
         case "activities":
             writeLines(activities, "color2 margin",50)
-        break;
+        break
         case "internships":
-            writeLines(internships, "color2 margin", 50);
-        break;
+            writeLines(internships, "color2 margin", 50)
+        break
         case "socials":
-            writeLines(socials, "color2 margin", 50);
-        break;
+            writeLines(socials, "color2 margin", 50)
+        break
         case "projects":
-            writeLines(projects, "color2 margin", 50);
-        break;
+            writeLines(projects, "color2 margin", 50)
+        break
         case "ai":
-            writeLines(ai, "color2 margin", 50);
-        break;
+            writeLines(ai, "color2 margin", 50)
+        break
         case "av":
-            writeLines(av, "color2 margin", 50);
-        break;
+            writeLines(av, "color2 margin", 50)
+        break
         case "rpg":
-            writeLines(rpg, "color2 margin", 50);
-        break;
+            writeLines(rpg, "color2 margin", 50)
+        break
         case "benchmark":
-            writeLines(benchmark, "color2 margin", 50);
-        break;
+            writeLines(benchmark, "color2 margin", 50)
+        break
         case "portfolio":
-            writeLines(portfolio, "color2 margin", 50);
-        break;
+            writeLines(portfolio, "color2 margin", 50)
+        break
         case "news":
-            writeLines(news, "color2 margin", 50);
-        break;
-        case "aiAPI":
-            writeLines(aiAPI, "color2 margin", 50);
-        break;
+            writeLines(news, "color2 margin", 50)
+        break
+        case "aiapi":
+            writeLines(aiAPI, "color2 margin", 50)
+        break
+        case "comments":
+            showComments()
+        break
+        case "comment":
+            addLine("Usage: comment name | short message", "color2", 0)
+        break
         case "wateralarm":
-            writeLines(wateralarm, "color2 margin", 50);
-        break;
+            writeLines(wateralarm, "color2 margin", 50)
+        break
         case "dispenser":
-            writeLines(sanitizer, "color2 margin", 50);
-        break;
+            writeLines(sanitizer, "color2 margin", 50)
+        break
         case "sheepfinder":
-            writeLines(sheep, "color2 margin", 50);
-            break;
+            writeLines(sheep, "color2 margin", 50)
+            break
         case "history":
-            addLine("<br>", "", 0);
-            writeLines(commands, "color2", 50);
-            addLine("<br>", "command", 80 * commands.length + 50);
-        break;
+            addLine("<br>", "", 0)
+            writeLines(commands, "color2", 50)
+            addLine("<br>", "command", 80 * commands.length + 50)
+        break
         case "clear":
             setTimeout(function() {
-            terminal.innerHTML = '<a id="before"></a>';
-            before = document.getElementById("before");
-            }, 1);
-        break;
+            terminal.innerHTML = '<a id="before"></a>'
+            before = document.getElementById("before")
+            }, 1)
+        break
         case "banner":
-            writeLines(banner, "", 50);
-        break;
+            writeLines(banner, "", 50)
+        break
         case "linkedin":
-            addLine("Opening LinkedIn...", "color2", 0);
-            newTab(linkedin);
-        break;
+            addLine("Opening LinkedIn...", "color2", 0)
+            newTab(linkedin)
+        break
         case "github":
-            addLine("Opening GitHub...", "color2", 0);
-            newTab(github);
-        break;
+            addLine("Opening GitHub...", "color2", 0)
+            newTab(github)
+        break
         case "light":
-            writeLines(light, "color2", 0);
-            body.classList.add("light");
-        break;
+            writeLines(light, "color2", 0)
+            body.classList.add("light")
+        break
         case "dark":
-            writeLines(dark, "color2", 0);
-            body.classList.remove("light");
-        break;
+            writeLines(dark, "color2", 0)
+            body.classList.remove("light")
+        break
         default:
-            addLine("<span class=\"inherit\">Command not found. For a list of commands, type <span class=\"command\">'help'</span>.</span>", "error", 100);
-        break;
+            addLine("<span class=\"inherit\">Command not found. For a list of commands, type <span class=\"command\">'help'</span>.</span>", "error", 100)
+        break
     }
 }
 
 function newTab(link) {
     setTimeout(function() {
-        window.open(link, "_blank");
-    }, 500);
+        window.open(link, "_blank")
+    }, 500)
 }
 
 function addLine(text, style, time) {
-    var t = "";
+    var t = ""
     for (let i = 0; i < text.length; i++) {
         if (text.charAt(i) == " " && text.charAt(i + 1) == " ") {
-            t += "&nbsp;&nbsp;";
-            i++;
+            t += "&nbsp;&nbsp;"
+            i++
         } 
         else {
-            t += text.charAt(i);
+            t += text.charAt(i)
         }
     }
     setTimeout(function() {
         var next = document.createElement("p");
-        next.innerHTML = t;
-        next.className = style;
+        next.innerHTML = t
+        next.className = style
 
-        before.parentNode.insertBefore(next, before);
+        before.parentNode.insertBefore(next, before)
 
-        window.scrollTo(0, document.body.offsetHeight);
-    }, time);
+        window.scrollTo(0, document.body.offsetHeight)
+    }, time)
 }
 
 function writeLines(name, style, time) {
     name.forEach(function(item, index) {
-        addLine(item, style, index * time);
-    });
+        addLine(item, style, index * time)
+    })
 }
 
 function getEl(elid) {
-    return document.getElementById(elid);
+    return document.getElementById(elid)
 }
 
 function init() {
-    cursor = getEl("cursor");
-    cursor.style.left = "0px";
+    cursor = getEl("cursor")
+    cursor.style.left = "0px"
 }
 
 function newLineBR(txt) {
-    return txt.replace(/\n/g, '');
+    return txt.replace(/\n/g, '')
 }
 
 function typeToTyper(from, e) {
-    e = e || window.event;
-    var w = getEl("typer");
-    var tw = from.value;
-    w.innerHTML = newLineBR(tw);
+    e = e || window.event
+    var w = getEl("typer")
+    var tw = from.value
+    w.innerHTML = newLineBR(tw)
 }
 
 function shiftCursor(count, e) {
-    e = e || window.event;
-    var keycode = e.keyCode || e.which;
+    e = e || window.event
+    var keycode = e.keyCode || e.which
     if (keycode == 37 && parseInt(cursor.style.left) >= (0 - ((count - 1) * 10))) {
-        cursor.style.left = parseInt(cursor.style.left) - 10 + "px";
+        cursor.style.left = parseInt(cursor.style.left) - 10 + "px"
     } 
     else if (keycode == 39 && (parseInt(cursor.style.left) + 10) <= 0) {
-    cursor.style.left = parseInt(cursor.style.left) + 10 + "px";
+    cursor.style.left = parseInt(cursor.style.left) + 10 + "px"
     }
 }
 
+async function saveComment(rawInput) {
+    var parts = rawInput.split("|");
+    if (parts.length < 2) {
+        addLine("Usage: comment name | short message", "error", 0)
+        return
+    }
+
+    var name = parts[0].trim();
+    var comment = parts.slice(1).join("|").trim()
+
+    if (!name || !comment) {
+        addLine("Name and comment cannot be empty.", "error", 0)
+        return
+    }
+
+    if (name.length > 40 || comment.length > 240) {
+        addLine("Max length: name 40 chars, comment 240 chars.", "error", 0)
+        return
+    }
+
+    if (!isSupabaseConfigured()) {
+        addLine("Supabase is not configured in main.js yet.", "error", 0)
+        return
+    }
+
+    var waitMs = getRemainingCooldownMs()
+    if (waitMs > 0) {
+        addLine("Please wait " + Math.ceil(waitMs / 1000) + "s before posting again.", "error", 0)
+        return
+    }
+
+    try {
+        var response = await fetch(SUPABASE_URL + "/rest/v1/comments", {
+            method: "POST",
+            headers: getSupabaseHeaders({
+                "Content-Type": "application/json",
+                Prefer: "return=minimal"
+            }),
+            body: JSON.stringify({
+                name: name,
+                message: comment
+            })
+        })
+
+        if (!response.ok) {
+            throw new Error("Failed to save comment")
+        }
+
+        setLastCommentAt(Date.now())
+        addLine("Comment saved. Type 'comments' to view.", "color2", 0)
+    } catch (error) {
+        addLine("Could not save comment right now. Please try again.", "error", 0)
+    }
+}
+
+function getRemainingCooldownMs() {
+    var raw = localStorage.getItem(LAST_COMMENT_AT_KEY)
+    var last = Number(raw)
+    if (!last || Number.isNaN(last)) {
+        return 0
+    }
+
+    var elapsed = Date.now() - last
+    if (elapsed >= COMMENT_COOLDOWN_MS) {
+        return 0
+    }
+
+    return COMMENT_COOLDOWN_MS - elapsed
+}
+
+function setLastCommentAt(timestampMs) {
+    localStorage.setItem(LAST_COMMENT_AT_KEY, String(timestampMs))
+}
+
+function isSupabaseConfigured() {
+    return SUPABASE_URL.indexOf("YOUR_PROJECT_ID") === -1 && SUPABASE_ANON_KEY.indexOf("YOUR_SUPABASE_ANON_KEY") === -1
+}
+
+function getSupabaseHeaders(extraHeaders) {
+    return Object.assign({
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: "Bearer " + SUPABASE_ANON_KEY
+    }, extraHeaders || {})
+}
+
+async function fetchGlobalComments() {
+    var response = await fetch(
+        SUPABASE_URL + "/rest/v1/comments?select=name,message,created_at&order=created_at.desc&limit=100",
+        {
+            method: "GET",
+            headers: getSupabaseHeaders()
+        }
+    )
+
+    if (!response.ok) {
+        throw new Error("Failed to load comments")
+    }
+
+    var data = await response.json()
+    return Array.isArray(data) ? data : []
+}
+
+async function showComments() {
+    addLine("<br>", "", 0)
+    addLine("Add comment with: comment name | short message", "color2", 40)
+    addLine("<br>", "", 80)
+
+    if (!isSupabaseConfigured()) {
+        addLine("Supabase is not configured in main.js yet.", "error", 120)
+        return
+    }
+
+    try {
+        var comments = await fetchGlobalComments();
+        if (!comments.length) {
+            addLine("No comments yet.", "color2", 120)
+            return
+        }
+
+        var lines = ['<span class="command">Comments</span>', "<br>"]
+        comments.forEach(function(item) {
+            lines.push(escapeHtml(item.name) + " [" + formatCommentTime(item.created_at) + "]")
+            lines.push("  " + escapeHtml(item.message))
+            lines.push("<br>")
+        });
+
+        writeLines(lines, "color2 margin", 50)
+    } catch (error) {
+        addLine("Could not load comments right now. Please try again.", "error", 120)
+    }
+}
+
+function formatCommentTime(isoTime) {
+    var date = new Date(isoTime)
+    if (Number.isNaN(date.getTime())) {
+        return "Unknown time"
+    }
+    return date.toLocaleString()
+}
+
+function escapeHtml(value) {
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;")
+}
