@@ -34,7 +34,7 @@ body.loading {
     background-color: #51ff00;
 }
 
-textarea{
+#texter{
     left: -1000px;
     position: absolute;
 }
