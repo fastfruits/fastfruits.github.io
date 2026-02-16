@@ -138,9 +138,6 @@ function commander(cmd) {
         case "comments":
             showComments()
         break
-        case "comment":
-            addLine("Usage: comment name | short message", "color2", 0)
-        break
         case "wateralarm":
             writeLines(wateralarm, "color2 margin", 50)
         break
@@ -252,14 +249,14 @@ function shiftCursor(count, e) {
 }
 
 async function saveComment(rawInput) {
-    var parts = rawInput.split("|");
+    var parts = rawInput.split("-");
     if (parts.length < 2) {
-        addLine("Usage: comment name | short message", "error", 0)
+        addLine("Usage: comment name - short message", "error", 0)
         return
     }
 
     var name = parts[0].trim();
-    var comment = parts.slice(1).join("|").trim()
+    var comment = parts.slice(1).join("-").trim()
 
     if (!name || !comment) {
         addLine("Name and comment cannot be empty.", "error", 0)
@@ -267,7 +264,7 @@ async function saveComment(rawInput) {
     }
 
     if (name.length > 40 || comment.length > 240) {
-        addLine("Max length: name 40 chars, comment 240 chars.", "error", 0)
+        addLine("Max length: name 40 characters, comment 240 characters.", "error", 0)
         return
     }
 
@@ -355,7 +352,7 @@ async function fetchGlobalComments() {
 
 async function showComments() {
     addLine("<br>", "", 0)
-    addLine("Add comment with: comment name | short message", "color2", 40)
+    addLine("Add comment with: comment name - short message", "color2", 40)
     addLine("<br>", "", 80)
 
     if (!isSupabaseConfigured()) {
