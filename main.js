@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 getEl("webTitle").style.display = 'none'
                 mainContent.style.display = 'block'
                 setTimeout(function() {
-                    writeLines(banner, "", 20)
+                    writeLines(getResponsiveBanner(), "banner-line", 20)
                     textarea.focus()
                 }, 100)
             }, 500)
@@ -159,7 +159,7 @@ function commander(cmd) {
             }, 1)
         break
         case "banner":
-            writeLines(banner, "", 50)
+            writeLines(getResponsiveBanner(), "banner-line", 50)
         break
         case "linkedin":
             addLine("Opening LinkedIn...", "color2", 0)
@@ -395,4 +395,8 @@ function escapeHtml(value) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#39;")
+}
+
+function getResponsiveBanner() {
+    return window.innerWidth <= 900 ? bannerMobile : banner
 }
