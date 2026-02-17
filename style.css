@@ -1,9 +1,13 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 body{
     margin: 0;
     padding: 15px 20px;
-    min-height: 99%;
-    width: 100%;
-    min-width: 550px;
+    min-height: 100vh;
     color: #51ff00;
     background: #0f0e0d;
     font-family: cursor, monospace;
@@ -19,9 +23,11 @@ body.loading {
     flex-direction: column;
 }
 
-#webtitle{
+#webTitle{
     text-align: left;
-    white-space: pre-wrap;
+    white-space: pre;
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 ::selection{
@@ -71,6 +77,7 @@ b{
     cursor: text;
     height: 50px;
     color: #00f7ff;
+    max-width: 100%;
 }
 
 #liner{
@@ -108,6 +115,11 @@ p{
     margin: 0;
     letter-spacing: 0.05em;
     animation: typing 0.5s steps(30, end);
+}
+
+.banner-line {
+    white-space: pre;
+    overflow: visible;
 }
 
   .no-animation{
@@ -189,6 +201,12 @@ a:focus{
 #main-content {
     text-align: left;
     margin-top: 0px;
+    max-width: 100%;
+}
+
+#terminal {
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 video {
@@ -196,7 +214,8 @@ video {
     border-style: solid;
     border-color: #00ff00;
     aspect-ratio: 16/9;
-    width: 800px;
+    width: min(100%, 800px);
+    height: auto;
 }
 
 .light {
@@ -204,25 +223,54 @@ video {
 }
 
 @media (max-width: 768px) {
-    #body{
-        background: #ffffff;
-        font-size: 10px;
+    body{
+        padding: 10px 12px;
+        font-size: 11px;
+        overflow-x: hidden;
     }
+
+    #webTitle {
+        font-size: 8px;
+        white-space: pre;
+        overflow-x: auto;
+    }
+
     body.loading {
         justify-content: center;
         height: 100vh;
         flex-direction: column;
     }
-    #main-content {
-        color: #ffffff;
-    }
+
     #loading-container {
-        left: 550px;
+        width: min(90vw, 300px);
     }
-    #loading-bar {
-        left: 550px;
-    }
+
+    #loading-bar,
     #loading-text {
-        left: 550px;
+        left: 0;
+    }
+
+    #liner::before{
+        content: "> ";
+    }
+
+    #command{
+        height: auto;
+        min-height: 40px;
+    }
+
+    p{
+        white-space: pre-wrap;
+        overflow: visible;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        animation: none;
+    }
+
+    p.banner-line{
+        white-space: pre;
+        overflow: visible;
+        word-break: normal;
+        overflow-wrap: normal;
     }
 }
