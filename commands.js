@@ -389,7 +389,7 @@ bannerMobile = [
   '<span class="color2">                              |___/</span>',
   "<br>",
   '<span class="color2">Welcome to my interactive web terminal.</span>',
-  "<span class=\"color2\">For a list of available commands, type (or click) '</span><a class=\"command\" onclick=\"addLine('X:\\\\Users\\\\Guest> help', 'no-animation', 0); commander('help')\">help</a><span class=\"color2\">'.</span>",
+  "<span class=\"color2\">For a list of available commands \ntype (or click) '</span><a class=\"command\" onclick=\"addLine('X:\\\\Users\\\\Guest> help', 'no-animation', 0); commander('help')\">help</a><span class=\"color2\">'.</span>",
 ]
 
 light = [
