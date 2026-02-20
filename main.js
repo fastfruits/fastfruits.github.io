@@ -10,11 +10,15 @@ var SUPABASE_URL = "https://zkodgtygleehzklkjsvc.supabase.co"
 var SUPABASE_ANON_KEY = "sb_publishable_zjID95Jk3779QiYrj_fPWw_ltxakTQk"
 var COMMENT_COOLDOWN_MS = 20000
 var LAST_COMMENT_AT_KEY = "last-comment-at-v1"
+var GA_MEASUREMENT_ID = window.GA_MEASUREMENT_ID || ""
+var analyticsInitialized = false
 
 var git = 0
 var commands = []
 
 document.addEventListener("DOMContentLoaded", function() {
+    initAnalytics()
+
     var loadingBar = getEl("loading-bar")
     var loadingText = getEl("loading-text")
     var loadingContainer = getEl("loading-container")
@@ -88,6 +92,9 @@ function commander(cmd) {
     var normalizedCmd = trimmedCmd.toLowerCase()
 
     if (normalizedCmd.startsWith("comment ")) {
+        trackEvent("conversation_comment_attempted", {
+            channel: "terminal"
+        })
         saveComment(trimmedCmd.slice(8))
         return
     }
@@ -136,6 +143,9 @@ function commander(cmd) {
             writeLines(aiAPI, "color2 margin", 50)
         break
         case "comments":
+            trackEvent("conversation_comments_viewed", {
+                channel: "terminal"
+            })
             showComments()
         break
         case "wateralarm":
@@ -185,6 +195,9 @@ function commander(cmd) {
 
 function newTab(link) {
     setTimeout(function() {
+        trackEvent("outbound_link_click", {
+            destination: link
+        })
         window.open(link, "_blank")
     }, 500)
 }
@@ -251,6 +264,9 @@ function shiftCursor(count, e) {
 async function saveComment(rawInput) {
     var parts = rawInput.split("-");
     if (parts.length < 2) {
+        trackEvent("conversation_comment_failed", {
+            reason: "invalid_format"
+        })
         addLine("Usage: comment name - short message", "error", 0)
         return
     }
@@ -259,22 +275,34 @@ async function saveComment(rawInput) {
     var comment = parts.slice(1).join("-").trim()
 
     if (!name || !comment) {
+        trackEvent("conversation_comment_failed", {
+            reason: "empty_fields"
+        })
         addLine("Name and comment cannot be empty.", "error", 0)
         return
     }
 
     if (name.length > 40 || comment.length > 240) {
+        trackEvent("conversation_comment_failed", {
+            reason: "max_length_exceeded"
+        })
         addLine("Max length: name 40 characters, comment 240 characters.", "error", 0)
         return
     }
 
     if (!isSupabaseConfigured()) {
+        trackEvent("conversation_comment_failed", {
+            reason: "supabase_unconfigured"
+        })
         addLine("Supabase is not configured in main.js yet.", "error", 0)
         return
     }
 
     var waitMs = getRemainingCooldownMs()
     if (waitMs > 0) {
+        trackEvent("conversation_comment_failed", {
+            reason: "cooldown_active"
+        })
         addLine("Please wait " + Math.ceil(waitMs / 1000) + "s before posting again.", "error", 0)
         return
     }
@@ -298,7 +326,15 @@ async function saveComment(rawInput) {
 
         setLastCommentAt(Date.now())
         addLine("Comment saved. Type 'comments' to view.", "color2", 0)
+        trackEvent("conversation_comment_submitted", {
+            channel: "terminal",
+            name_length: name.length,
+            message_length: comment.length
+        })
     } catch (error) {
+        trackEvent("conversation_comment_failed", {
+            reason: "request_failed"
+        })
         addLine("Could not save comment right now. Please try again.", "error", 0)
     }
 }
@@ -362,6 +398,9 @@ async function showComments() {
 
     try {
         var comments = await fetchGlobalComments();
+        trackEvent("conversation_comments_loaded", {
+            comment_count: comments.length
+        })
         if (!comments.length) {
             addLine("No comments yet.", "color2", 120)
             return
@@ -399,4 +438,82 @@ function escapeHtml(value) {
 
 function getResponsiveBanner() {
     return window.innerWidth <= 900 ? bannerMobile : banner
+}
+
+function isGaConfigured() {
+    return /^G-[A-Z0-9]+$/.test(GA_MEASUREMENT_ID) && GA_MEASUREMENT_ID !== "G-XXXXXXXXXX"
+}
+
+function initAnalytics() {
+    if (analyticsInitialized || !isGaConfigured()) {
+        return
+    }
+
+    window.dataLayer = window.dataLayer || []
+    if (!window.gtag) {
+        window.gtag = function() {
+            window.dataLayer.push(arguments)
+        }
+    }
+
+    window.gtag("js", new Date())
+    window.gtag("config", GA_MEASUREMENT_ID, {
+        send_page_view: true
+    })
+
+    var script = document.createElement("script")
+    script.async = true
+    script.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(GA_MEASUREMENT_ID)
+    document.head.appendChild(script)
+
+    analyticsInitialized = true
+
+    var traffic = getTrafficAttribution()
+    trackEvent("site_visit", {
+        traffic_source: traffic.source,
+        traffic_medium: traffic.medium,
+        traffic_campaign: traffic.campaign
+    })
+}
+
+function trackEvent(eventName, params) {
+    if (!isGaConfigured() || !window.gtag) {
+        return
+    }
+
+    window.gtag("event", eventName, params || {})
+}
+
+function getTrafficAttribution() {
+    var params = new URLSearchParams(window.location.search)
+    var utmSource = params.get("utm_source")
+    var utmMedium = params.get("utm_medium")
+    var utmCampaign = params.get("utm_campaign")
+
+    if (utmSource || utmMedium || utmCampaign) {
+        return {
+            source: utmSource || "(not set)",
+            medium: utmMedium || "(not set)",
+            campaign: utmCampaign || "(not set)"
+        }
+    }
+
+    if (!document.referrer) {
+        return {
+            source: "direct",
+            medium: "(none)",
+            campaign: "(not set)"
+        }
+    }
+
+    var referrerHost = "referral"
+    try {
+        referrerHost = new URL(document.referrer).hostname.replace(/^www\./, "")
+    } catch (error) {}
+
+    return {
+        source: referrerHost || "referral",
+        medium: "referral",
+        campaign: "(not set)"
+    }
 }
