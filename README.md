@@ -24,6 +24,11 @@ This project is a portfolio website designed to look and function like a termina
 - **Comment Storage**: Use Supabase in order to store comments made by users here
 - **Comment Creation**: Enables users to create comments with their name and a short message
 
+### Google Analytics 4 (GA4)
+- **Site Visits**: Automatically tracks page views and a `site_visit` event.
+- **Conversations**: Tracks comment command attempts, successful comment submissions, failures, and comment feed views.
+- **Traffic Sources**: Captures source/medium/campaign attribution via UTM params and referrer data.
+
 ### Future Enhancements
 
 - **Additional Commands**: Adding more commands to display additional information.
