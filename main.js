@@ -187,6 +187,9 @@ function commander(cmd) {
             writeLines(dark, "color2", 0)
             body.classList.remove("light")
         break
+        case "resume":
+            writeLines(resume, "color2", 0)
+        break
         default:
             addLine("<span class=\"inherit\">Command not found. For a list of commands, type <span class=\"command\">'help'</span>.</span>", "error", 100)
         break

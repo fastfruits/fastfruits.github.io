@@ -6,6 +6,7 @@ var email = "mailto:nicholasahenry06@gmail.com"
 help = [
   "<br>",
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(whois, \'color2\', 50)">whois</a>          Who Is Nicholas Henry?',
+  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(resume, \'color2\', 50)">resume</a>         See my resume',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(skills, \'color2\', 50)">techstack</a>      My Languages And Libraries',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(activities, \'color2\', 50)">activities</a>     Clubs and other',
   '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(internships, \'color2\', 50)">internships</a>    Real World Experience',
@@ -52,8 +53,6 @@ skills = [
   "   -Java: ",
   "         *Learned through my AP Computer Science class and the projects",
   "         *Experienced in developing computer applications, games, and other types of programs",
-  "   -C#: ",
-  "         *Learned through the freecodecamp.org C# certification course",
   "<br>",
   '<span class="command">Web Development</span>',
   "<br>",
@@ -319,8 +318,14 @@ jarvisDemo = [
   "<br>",
 ]
 
+resume = [
+  "<br>",
+  '<span>Download my latest resume here --> <a class="command" href="/resume.pdf" download>(PDF)</a><span>',
+  "<br>",
+]
+
 banner = [
-  '<span class="index">NHenry.dev [Version 1.2.4]<span>',
+  '<span class="index">NHenry.dev [Version 2.0.0]<span>',
   ,'<span class="index">Nicholas Henry (NH) Not A Corporation. All rights reserved.</span>',
   ,"                              =",
   ,"                              ==",
