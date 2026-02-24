@@ -1,0 +1,32 @@
+name: Update resume PDF from Google Docs
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */12 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update_resume:
+    runs_on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download last version of PDF
+        run: |
+          ID = "1Y6v6AAJA2YVP1i0kyErn5qLB-9Y0LZoy"
+          curl -L "https://docs.google.com/document/d/${ID}/export?format=pdf" -o resume.pdf
+      
+      - name: Commit if changed
+        run: |
+          git config user.name "fastfruits"
+          git config user.email "nicholasahenry06@gmail.com"
+          git add resume.pdf
+          if git diff --cache --quiet; then
+            echo "No change"
+          else
+            git commit -m "chore: Auto updating resume"
+            git push
+          fi
