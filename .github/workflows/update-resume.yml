@@ -10,23 +10,23 @@ permissions:
 
 jobs:
   update_resume:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download last version of PDF
+      - name: Download latest PDF
         run: |
-          ID = "1Y6v6AAJA2YVP1i0kyErn5qLB-9Y0LZoy"
-          curl -L "https://docs.google.com/document/d/${ID}/export?format=pdf" -o resume.pdf
-      
+          DOC_ID="1Y6v6AAJA2YVP1i0kyErn5qLB-9Y0LZoy"
+          curl -fL "https://docs.google.com/document/d/${DOC_ID}/export?format=pdf" -o resume.pdf
+
       - name: Commit if changed
         run: |
           git config user.name "fastfruits"
           git config user.email "nicholasahenry06@gmail.com"
           git add resume.pdf
-          if git diff --cache --quiet; then
-            echo "No change"
+          if git diff --cached --quiet; then
+            echo "No changes"
           else
-            git commit -m "chore: Auto updating resume"
+            git commit -m "chore: auto update resume"
             git push
           fi
