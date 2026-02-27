@@ -320,7 +320,7 @@ jarvisDemo = [
 
 resume = [
   "<br>",
-  '<span>Download my latest resume here --> <a class="command" href="/resume.pdf" download>(PDF)</a><span>',
+  '<span>Download my latest resume here --> <a class="command" href="/resume.pdf" download target="_blank">(PDF)</a><span>',
   "<br>",
 ]
 
