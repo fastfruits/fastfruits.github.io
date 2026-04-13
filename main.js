@@ -136,11 +136,11 @@ function commander(cmd) {
         case "portfolio":
             writeLines(portfolio, "color2 margin", 50)
         break
-        case "news":
-            writeLines(news, "color2 margin", 50)
-        break
         case "aiapi":
             writeLines(aiAPI, "color2 margin", 50)
+        break
+        case "energy":
+            writeLines(energy, "color2 margin", 50)
         break
         case "comments":
             trackEvent("conversation_comments_viewed", {
