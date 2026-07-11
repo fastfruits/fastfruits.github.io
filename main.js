@@ -151,7 +151,7 @@ function commander(cmd) {
         case "wateralarm":
             writeLines(wateralarm, "color2 margin", 50)
         break
-        case "dispenser":
+        case "sanitizer":
             writeLines(sanitizer, "color2 margin", 50)
         break
         case "sheepfinder":
