@@ -124,6 +124,7 @@ projects = [
   '<a class="command" id="portfolio" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(portfolio, \'\', 80)">Portfolio Website</a>           this website',
   '<a class="command" id="aiAPI" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(aiAPI, \'\', 80)">AI Personality</a>              AI personality chatbot',
   '<a class="command" id="ai" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(ai, \'\', 80)">AI Text-Transcriber</a>         written to digital text converter',
+  '<a class="command" id="neural" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(neural, \'\', 80)">Neural Network</a>        Neural network project with NumPy',
   '<a class="command" id="rpg" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(rpg, \'\', 80)">Medieval RPG</a>                GameJam 2D RPG',
   '<a class="command" id="benchmark" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(energy, \'\', 80)">Energy Education</a>            class project to teach kids about energy conservation',
   '<a class="command" id="sanitizer" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(sanitizer, \'\', 80)">Auto Sanitizer Dispenser</a>    class project for a contactless sanitizer dispenser',
@@ -134,7 +135,7 @@ projects = [
   //'<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(news, \'\', 80)">Daily News Compiler[WIP]</a>',
   //'<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(wateralarm, \'\', 80)">Water Alarm Clock[WIP]</a>',
   "<br>",
-  '<span class="command">Commands(or clickable btw^):</span>           portfolio, aiAPI, ai, rpg, av, energy, benchmark, sanitizer, sheepfinder',
+  '<span class="command">Commands(or clickable btw^):</span>           portfolio, aiAPI, ai, neural, rpg, av, energy, benchmark, sanitizer, sheepfinder',
   "<br>"
 ]
 
@@ -185,6 +186,18 @@ projectCatalog = [
     'Check out the code here on GitHub -----> <a class="command" href="https://github.com/panyang05/Text-Transcriber" target="_blank">Repository</a>',
     "<br>"
   ],
+
+  neural = [
+    "<br>",
+    '<span class=""command>Neural Network</span>',
+    "<br>",
+    "     -Quick little neural network project using just NumPy so no Tensorflow or other machine learning frameworks. Wanted to learn about what a network is built out of.",
+    "      Has two layers and uses forward and backward propagation and a simple weight adjustment function to enable learning. Uses the MNIST handwritten numbers dataset and can achieve",
+    "      around a 90% accuracy on its predictions.",
+    "<br>",
+    'Check out the code here on GitHub -----> <a class="command" href="https://github.com/fastfruits/neural-network" target="_blank">Repository</a>',
+    "<br>",
+  ],  
   
   rpg = [
     "<br>",

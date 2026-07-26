@@ -142,6 +142,9 @@ function commander(cmd) {
         case "energy":
             writeLines(energy, "color2 margin", 50)
         break
+        case "neural":
+            writeLines(neural, "color2 margin", 50)
+        break
         case "comments":
             trackEvent("conversation_comments_viewed", {
                 channel: "terminal"
