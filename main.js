@@ -175,15 +175,21 @@ function commander(cmd) {
             writeLines(getResponsiveBanner(), "banner-line", 50)
         break
         case "linkedin":
+            addLine("<br>")
             addLine("Opening LinkedIn...", "color2", 0)
+            addLine("<br>")
             newTab(linkedin)
         break
         case "github":
+            addLine("<br>")
             addLine("Opening GitHub...", "color2", 0)
+            addLine("<br>")
             newTab(github)
         break
         case "light":
+            addLine("<br>")
             writeLines(light, "color2", 0)
+            addLine("<br>")
             body.classList.add("light")
         break
         case "dark":
@@ -194,7 +200,9 @@ function commander(cmd) {
             writeLines(resume, "color2", 0)
         break
         default:
+            addLine("<br>")
             addLine("<span class=\"inherit\">Command not found. For a list of commands, type <span class=\"command\">'help'</span>.</span>", "error", 100)
+            addLine("<br>")
         break
     }
 }
@@ -273,7 +281,9 @@ async function saveComment(rawInput) {
         trackEvent("conversation_comment_failed", {
             reason: "invalid_format"
         })
+        addLine("<br>")
         addLine("Usage: comment name - short message", "error", 0)
+        addLine("<br>")
         return
     }
 
@@ -284,7 +294,9 @@ async function saveComment(rawInput) {
         trackEvent("conversation_comment_failed", {
             reason: "empty_fields"
         })
+        addLine("<br>")
         addLine("Name and comment cannot be empty.", "error", 0)
+        addLine("<br>")
         return
     }
 
@@ -292,7 +304,9 @@ async function saveComment(rawInput) {
         trackEvent("conversation_comment_failed", {
             reason: "max_length_exceeded"
         })
+        addLine("<br>")
         addLine("Max length: name 40 characters, comment 240 characters.", "error", 0)
+        addLine("<br>")
         return
     }
 
@@ -300,7 +314,9 @@ async function saveComment(rawInput) {
         trackEvent("conversation_comment_failed", {
             reason: "supabase_unconfigured"
         })
+        addLine("<br>")
         addLine("Supabase is not configured in main.js yet.", "error", 0)
+        addLine("<br>")
         return
     }
 
@@ -309,7 +325,9 @@ async function saveComment(rawInput) {
         trackEvent("conversation_comment_failed", {
             reason: "cooldown_active"
         })
+        addLine("<br>")
         addLine("Please wait " + Math.ceil(waitMs / 1000) + "s before posting again.", "error", 0)
+        addLine("<br>")
         return
     }
 
@@ -331,7 +349,9 @@ async function saveComment(rawInput) {
         }
 
         setLastCommentAt(Date.now())
+        addLine("<br>")
         addLine("Comment saved. Type 'comments' to view.", "color2", 0)
+        addLine("<br>")
         trackEvent("conversation_comment_submitted", {
             channel: "terminal",
             name_length: name.length,
@@ -341,7 +361,9 @@ async function saveComment(rawInput) {
         trackEvent("conversation_comment_failed", {
             reason: "request_failed"
         })
+        addLine("<br>")
         addLine("Could not save comment right now. Please try again.", "error", 0)
+        addLine("<br>")
     }
 }
 
