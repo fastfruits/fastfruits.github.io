@@ -29,7 +29,7 @@ whois = [
   "Now on the Boston campus, I'm involved in clubs like NER and SEDS while excelling in my studies with a 3.91 GPA.",
   "<br>",
   "<b>A little bit about my past</b>",
-  "I'm a first-generation American — with Russian and Irish citizenship as well — and I grew up in Miami, FL.",
+  "I'm a first-generation American — with Russian and Irish citizenship as well and I grew up in Miami, FL.",
   "After taking AP Computer Science A in high school, I continued to program and strived to learn new skills, which I did through AICamp.org.",
   "In their summer camp I programmed and trained an AI model with Python, TensorFlow, and some Google APIs, which taught me a lot.",
   "<br>",
