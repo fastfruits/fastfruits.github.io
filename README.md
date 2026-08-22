@@ -32,6 +32,7 @@ This project is a portfolio website designed to look and function like a termina
 ### Future Enhancements
 
 - **Additional Commands**: Adding more commands to display additional information.
+- **More projects!**: Working on more projects to add here as I keep on creating.
 
 ---
 
