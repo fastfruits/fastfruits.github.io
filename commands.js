@@ -264,12 +264,14 @@ projectCatalog = [
   
   sheep = [
     "<br>",
-    '<span class="command">Sheep Finder[WIP]</span>',
+    '<span class="command">SheepFinder</span>',
     "<br>",
-    "     -After studying abroad in Northern Ireland, I spotted a problem: farmers and runaway sheep. I'm building a mobile app to help farmers tackle it.",
-    "     -Community members who come across a runaway sheep can upload a photo and describe its markings. Farmers who are signed up and have sheep with",
-    "     those markings are then notified of the sheep and its location so they can bring it back to the farm.",
+    "     -After studying abroad in Northern Ireland, I spotted a problem: farmers and runaway sheep. I built a web app to help farmers tackle it.",
+    "     -Community members who come across a runaway sheep or other animals can upload a photo and describe its markings. Farmers who are signed up and have animals with",
+    "     those markings are then notified of the animals and its location so they can bring it back to the farm.",
+    "     -I built this app with Next.js and React and in collaboration with Claude Code a lot in order to create the database and frontend.",
     "<br>",
+    '<span>Visit the site <a class="command" href="sheepfinder.xyz" target="_blank")">here</a>.</span>',
     'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/sheep-finder" target="_blank">Repository</a>',
     "<br>"
   ],
@@ -308,7 +310,7 @@ resume = [
 ]
 
 banner = [
-  '<span class="index">NHenry.dev [Version 2.0.0]<span>',
+  '<span class="index">NHenry.dev [Version 3.1.27]<span>',
   ,'<span class="index">Nicholas Henry (NH) Not A Corporation. All rights reserved.</span>',
   ,"                              =",
   ,"                              ==",
@@ -341,7 +343,7 @@ banner = [
 ]
 
 bannerMobile = [
-  '<span class="index">NHenry.dev [Version 1.2.4]<span>',
+  '<span class="index">NHenry.dev [Version 3.1.27]<span>',
   '<span class="index">Nicholas Henry (NH) Not A Corporation. All rights reserved.</span>',
   "                              =",
   "                              ==",
