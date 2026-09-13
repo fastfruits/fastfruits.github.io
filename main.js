@@ -310,6 +310,18 @@ async function saveComment(rawInput) {
         return
     }
 
+    var blockedField = getBlockedLanguageField(name, comment)
+    if (blockedField) {
+        trackEvent("conversation_comment_failed", {
+            reason: "profanity_blocked",
+            field: blockedField
+        })
+        addLine("<br>")
+        addLine("Comment blocked: keep the " + blockedField + " free of profanity and slurs.", "error", 0)
+        addLine("<br>")
+        return
+    }
+
     if (!isSupabaseConfigured()) {
         trackEvent("conversation_comment_failed", {
             reason: "supabase_unconfigured"
@@ -345,7 +357,15 @@ async function saveComment(rawInput) {
         })
 
         if (!response.ok) {
-            throw new Error("Failed to save comment")
+            var serverMessage = await readUserFacingError(response)
+            trackEvent("conversation_comment_failed", {
+                reason: "rejected_by_server",
+                status: response.status
+            })
+            addLine("<br>")
+            addLine(serverMessage || "Could not save comment right now. Please try again.", "error", 0)
+            addLine("<br>")
+            return
         }
 
         setLastCommentAt(Date.now())
@@ -365,6 +385,37 @@ async function saveComment(rawInput) {
         addLine("Could not save comment right now. Please try again.", "error", 0)
         addLine("<br>")
     }
+}
+
+// The database moderation rules in supabase/comments-hardening.sql tag their
+// errors with hint "show-user", so those messages can be shown as written.
+async function readUserFacingError(response) {
+    try {
+        var body = await response.json()
+        return body && body.hint === "show-user" ? body.message : ""
+    } catch (error) {
+        return ""
+    }
+}
+
+function getBlockedLanguageField(name, comment) {
+    if (typeof Profanity === "undefined") {
+        return ""
+    }
+
+    if (Profanity.check(name).blocked) {
+        return "name"
+    }
+
+    if (Profanity.check(comment).blocked) {
+        return "message"
+    }
+
+    return ""
+}
+
+function maskBlockedLanguage(text) {
+    return typeof Profanity === "undefined" ? text : Profanity.mask(text)
 }
 
 function getRemainingCooldownMs() {
@@ -436,8 +487,8 @@ async function showComments() {
 
         var lines = ['<span class="command">Comments</span>', "<br>"]
         comments.forEach(function(item) {
-            lines.push(escapeHtml(item.name) + " [" + formatCommentTime(item.created_at) + "]")
-            lines.push("  " + escapeHtml(item.message))
+            lines.push(escapeHtml(maskBlockedLanguage(item.name)) + " [" + formatCommentTime(item.created_at) + "]")
+            lines.push("  " + escapeHtml(maskBlockedLanguage(item.message)))
             lines.push("<br>")
         });
 

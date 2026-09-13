@@ -23,6 +23,8 @@ This project is a portfolio website designed to look and function like a termina
 ### Supabase
 - **Comment Storage**: Use Supabase in order to store comments made by users here
 - **Comment Creation**: Enables users to create comments with their name and a short message
+- **Comment Moderation**: `profanity.js` blocks profanity and slurs (including leetspeak, spaced-out, and repeated-letter variants) before a comment is sent, and masks anything already stored when comments are displayed
+- **Server-Side Enforcement**: `supabase/comments-hardening.sql` mirrors that filter as a database trigger, along with length limits, rate limiting, and duplicate blocking, so the rules still apply to anyone posting directly to the API
 
 ### Google Analytics 4 (GA4)
 - **Site Visits**: Automatically tracks page views and a `site_visit` event.
