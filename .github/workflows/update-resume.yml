@@ -3,7 +3,7 @@ name: Update resume PDF from Google Docs
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */12 * * *"
+    - cron: "0 */6 * * *"
 
 permissions:
   contents: write
@@ -16,7 +16,7 @@ jobs:
 
       - name: Download latest PDF
         run: |
-          DOC_ID="1Y6v6AAJA2YVP1i0kyErn5qLB-9Y0LZoy"
+          DOC_ID="1du24hlWahn9z_7tM-vy2VMeggMwc0WPdn_vL7QGpZUM"
           curl -fL "https://docs.google.com/document/d/${DOC_ID}/export?format=pdf" -o resume.pdf
 
       - name: Commit if changed

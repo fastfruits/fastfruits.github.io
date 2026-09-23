@@ -22,7 +22,8 @@ help = [
 
 whois = [
   "<br>",
-  "Hello,",
+  "Hello my name is Nicholas Henry,",
+  '<img src="resources/me.png" width=200 height=300>',
   "<br>",
   "I am currently a sophomore at Northeastern University studying mechanical engineering and computer science, looking for an internship for summer 2026 or a co-op next spring.",
   "I studied abroad for my first semester at Queen's University in Northern Ireland through NU.IN and gained a great deal of independence.",
@@ -280,25 +281,25 @@ projectCatalog = [
 demos = [
   aiDemo = [
     "<br>",
-    '<video controls src="demos/sample.mp4">',
+    '<video controls src="resources/sample.mp4">',
     "<br>",
   ],
   
   rpgDemo = [
     "<br>",
-    '<video controls src="demos/medievalDemo.mp4">',
+    '<video controls src="resources/medievalDemo.mp4">',
     "<br>",
   ],
   
   benchmarkDemo = [
     "<br>",
-    '<video controls src="demos/benchmarkDemo.mp4">',
+    '<video controls src="resources/benchmarkDemo.mp4">',
     "<br>",
   ],
   
   aiAPIDemo = [
     "<br>",
-    '<video controls src="demos/sample.mp4">',
+    '<video controls src="resources/sample.mp4">',
     "<br>",
   ],
 ]
