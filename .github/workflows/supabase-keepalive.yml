@@ -1,0 +1,28 @@
+name: Keep Supabase project awake
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 7 */2 * *"
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query the comments table
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://zkodgtygleehzklkjsvc.supabase.co' }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || 'sb_publishable_zjID95Jk3779QiYrj_fPWw_ltxakTQk' }}
+        run: |
+          status=$(curl -s -o /tmp/body.txt -w '%{http_code}' \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            "${SUPABASE_URL}/rest/v1/comments?select=created_at&order=created_at.desc&limit=1")
+
+          echo "HTTP ${status}"
+          cat /tmp/body.txt
+
+          if [ "$status" != "200" ]; then
+            echo "::error::Supabase ping failed with HTTP ${status} - the project may already be paused."
+            exit 1
+          fi
