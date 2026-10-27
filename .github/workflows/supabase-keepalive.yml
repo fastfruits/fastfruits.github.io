@@ -3,7 +3,10 @@ name: Keep Supabase project awake
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 7 */2 * *"
+    # Daily. Supabase pauses free projects after 7 days with no API traffic,
+    # and GitHub silently drops scheduled runs under load, so a daily cron
+    # leaves room for several skipped runs before that window is at risk.
+    - cron: "17 7 * * *"
 
 jobs:
   ping:
@@ -14,15 +17,24 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://zkodgtygleehzklkjsvc.supabase.co' }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || 'sb_publishable_zjID95Jk3779QiYrj_fPWw_ltxakTQk' }}
         run: |
-          status=$(curl -s -o /tmp/body.txt -w '%{http_code}' \
-            -H "apikey: ${SUPABASE_ANON_KEY}" \
-            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
-            "${SUPABASE_URL}/rest/v1/comments?select=created_at&order=created_at.desc&limit=1")
+          # Retry transient gateway errors so a blip is not reported as a pause.
+          for attempt in 1 2 3; do
+            status=$(curl -s -o /tmp/body.txt -w '%{http_code}' \
+              -H "apikey: ${SUPABASE_ANON_KEY}" \
+              -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+              "${SUPABASE_URL}/rest/v1/comments?select=created_at&order=created_at.desc&limit=1")
 
-          echo "HTTP ${status}"
-          cat /tmp/body.txt
+            echo "attempt ${attempt}: HTTP ${status}"
+            cat /tmp/body.txt
+            echo
 
-          if [ "$status" != "200" ]; then
-            echo "::error::Supabase ping failed with HTTP ${status} - the project may already be paused."
-            exit 1
-          fi
+            if [ "$status" = "200" ]; then
+              echo "Supabase responded - project is awake."
+              exit 0
+            fi
+
+            sleep 15
+          done
+
+          echo "::error::Supabase ping failed after 3 attempts (last HTTP ${status}) - the project may be paused."
+          exit 1

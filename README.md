@@ -25,7 +25,7 @@ This project is a portfolio website designed to look and function like a termina
 - **Comment Creation**: Enables users to create comments with their name and a short message
 - **Comment Moderation**: `profanity.js` blocks profanity and slurs (including leetspeak, spaced-out, and repeated-letter variants) before a comment is sent, and masks anything already stored when comments are displayed
 - **Server-Side Enforcement**: `supabase/comments-hardening.sql` mirrors that filter as a database trigger, along with length limits, rate limiting, and duplicate blocking, so the rules still apply to anyone posting directly to the API
-- **Keep Alive**: `.github/workflows/supabase-keepalive.yml` reads one row from the `comments` table every other day so the free-tier project never hits the 7-day inactivity pause. It fails loudly if the request does not return HTTP 200
+- **Keep Alive**: `.github/workflows/supabase-keepalive.yml` reads one row from the `comments` table once a day so the free-tier project never hits the 7-day inactivity pause. It retries transient errors and fails loudly if the request still does not return HTTP 200
 
 ### Google Analytics 4 (GA4)
 - **Site Visits**: Automatically tracks page views and a `site_visit` event.
