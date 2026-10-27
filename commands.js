@@ -2,6 +2,7 @@ var linkedin = "https://www.linkedin.com/in/nahenry06/"
 var github = "https://github.com/fastfruits"
 var instagram = "https://instagram.com/n.henry06"
 var email = "mailto:nicholasahenry06@gmail.com"
+var twitter = "https://x.com/nhenrydev"
 
 help = [
   "<br>",
@@ -25,12 +26,12 @@ whois = [
   "Hello my name is Nicholas Henry,",
   '<img src="resources/me.png" width=200 height=300>',
   "<br>",
-  "I am currently a sophomore at Northeastern University studying mechanical engineering and computer science, looking for an internship for summer 2026 or a co-op next spring.",
+  "I am currently a sophomore at Northeastern University studying mechanical engineering and computer science, looking for an internship for summer or a co-op spring 2027.",
   "I studied abroad for my first semester at Queen's University in Northern Ireland through NU.IN and gained a great deal of independence.",
-  "Now on the Boston campus, I'm involved in clubs like NER and SEDS while excelling in my studies with a 3.91 GPA.",
+  "Now on the Boston campus, I'm involved in clubs like NER and Northeastern Satellite Lab while excelling in my studies with a 3.79 GPA.",
   "<br>",
   "<b>A little bit about my past</b>",
-  "I'm a first-generation American — with Russian and Irish citizenship as well and I grew up in Miami, FL.",
+  "I'm a first-generation American, with Russian and Irish citizenship as well and I grew up in Miami, FL.",
   "After taking AP Computer Science A in high school, I continued to program and strived to learn new skills, which I did through AICamp.org.",
   "In their summer camp I programmed and trained an AI model with Python, TensorFlow, and some Google APIs, which taught me a lot.",
   "<br>",
@@ -90,6 +91,10 @@ activities = [
   "   - Use Python as the backend to do all the physics and Dash Plotly to display to a site to easily see all graphs and metrics",
   "   - Learned to work with other departments to understand what each one needed in order to better develop the car they were building",
   "<br>",
+  '<a class="command">Northeastern Satellite Lab (NSL)</a> - SWE for the telemetry team',
+  "   - Working in the telemetry, tracking, and control manager system for the satellite which means working with networking, SDRs, and OBCs",
+  "   - Write F prime code (C++) for all the systems on the satellite for extra redundancy and safety",
+  "<br>",
   '<a class="command">Students for the Exploration and Discovery of Space</a> - SWE for NEST (Network Exploration Swarm Toolkit)',
   "<br>",
   "   - NEST is a project to create a swarm of miniature C.O.B.R.A. (Crater Observing Bio-inspired Rolling Articulator)",
@@ -144,6 +149,7 @@ socials = [
   "<br>",
   '<a class="command" href="' + github + '" target="_blank">github</a>',
   '<a class="command" href="' + linkedin + '" target="_blank">linkedin</a>',
+  '<a class="command" href="' + twitter + '" target="_blank">X (fka twitter)</a>',
   '<a class="command" href="' + instagram + '" target="_blank">instagram</a>',
   '<a class="command" href="' + email + '" target="_blank">email</a>',
   "<br>"
