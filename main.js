@@ -485,14 +485,15 @@ async function showComments() {
             return
         }
 
-        var lines = ['<span class="command">Comments</span>', "<br>"]
+        var step = 0
+        addLine('<span class="command">Comments</span>', "color2 margin", step++ * 50)
+        addLine("<br>", "color2 margin", step++ * 50)
         comments.forEach(function(item) {
-            lines.push(escapeHtml(maskBlockedLanguage(item.name)) + " [" + formatCommentTime(item.created_at) + "]")
-            lines.push("  " + escapeHtml(maskBlockedLanguage(item.message)))
-            lines.push("<br>")
+            var head = escapeHtml(maskBlockedLanguage(item.name)) + " [" + formatCommentTime(item.created_at) + "]"
+            addLine(head, "color2 margin comment-head", step++ * 50)
+            addLine(escapeHtml(maskBlockedLanguage(item.message)), "color2 margin comment-body", step++ * 50)
+            addLine("<br>", "color2 margin", step++ * 50)
         });
-
-        writeLines(lines, "color2 margin", 50)
     } catch (error) {
         addLine("Could not load comments right now. Please try again.", "error", 120)
     }

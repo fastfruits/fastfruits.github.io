@@ -130,6 +130,20 @@ p{
     margin-left: 20px;
 }
 
+.comment-head,
+.comment-body{
+    white-space: pre-wrap;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    animation: none;
+    max-width: 80ch;
+}
+
+.comment-body{
+    padding-left: 2ch;
+}
+
 @keyframes typing{
     from{
         width: 0;
@@ -272,5 +286,14 @@ video {
         overflow: visible;
         word-break: normal;
         overflow-wrap: normal;
+    }
+
+    .comment-head,
+    .comment-body{
+        max-width: 100%;
+    }
+
+    .margin{
+        margin-left: 8px;
     }
 }
