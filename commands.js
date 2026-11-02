@@ -127,21 +127,22 @@ internships = [
 
 projects = [
   "<br>",
+  '<a class="command" id="sheep" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(sheep, \'\', 80)">SheepFinder</a>        crowd powered solution for lost animals',
   '<a class="command" id="portfolio" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(portfolio, \'\', 80)">Portfolio Website</a>           this website',
   '<a class="command" id="aiAPI" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(aiAPI, \'\', 80)">AI Personality</a>              AI personality chatbot',
   '<a class="command" id="ai" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(ai, \'\', 80)">AI Text-Transcriber</a>         written to digital text converter',
-  '<a class="command" id="neural" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(neural, \'\', 80)">Neural Network</a>              Neural network project with NumPy',
+  '<a class="command" id="benchmark" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(wheat, \'\', 80)">Bro Look At My Wheat</a>            HackHarvard project to assist farmers in crop maintenance',
+  '<a class="command" id="neural" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(neural, \'\', 80)">Neural Network</a>              Neural network project with NumPy and propagation',
   '<a class="command" id="rpg" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(rpg, \'\', 80)">Medieval RPG</a>                GameJam 2D RPG',
   '<a class="command" id="benchmark" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(energy, \'\', 80)">Energy Education</a>            class project to teach kids about energy conservation',
   '<a class="command" id="sanitizer" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(sanitizer, \'\', 80)">Auto Sanitizer Dispenser</a>    class project for a contactless sanitizer dispenser',
-  '<a class="command" id="sheep" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(sheep, \'\', 80)">Sheep Finder[WIP]</a>',
   '<a class="command" id="av" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(av, \'\', 80)">Ten80 AV Car</a>                for my high school\'s Ten80 AV car',
   '<a class="command" id="benchmark" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(benchmark, \'\', 80)">Human Benchmark Test</a>        Hack-A-Thon submission of a human benchmark test',
   //'<a class="command" id="jarvis" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(jarvis, \'\', 80)">Jarvis Discord Bot[WIP]</a>',
   //'<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(news, \'\', 80)">Daily News Compiler[WIP]</a>',
   //'<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(wateralarm, \'\', 80)">Water Alarm Clock[WIP]</a>',
   "<br>",
-  '<span class="command">Commands(or clickable btw^):</span>           portfolio, aiAPI, ai, neural, rpg, av, energy, benchmark, sanitizer, sheepfinder',
+  '<span class="command">Commands(or clickable btw^):</span>           wheat, sheep, portfolio, aiAPI, ai, neural, rpg, av, energy, benchmark, sanitizer',
   "<br>"
 ]
 
@@ -156,6 +157,18 @@ socials = [
 ] 
 
 projectCatalog = [
+  wheat = [
+    "<br>",
+    '<span class="command">Bro Look At My Wheat (HackHarvard)</span>',
+    "<br>",
+    '       -Trained a drone to autonomously search for wheat with a YoloV8 model, determine its close, then return to an april tag',
+    '       -Built a data pipeline that took the images and weather data gathered and matched them to satellite info in the area and analyzed',
+    '        it using chalk data agents to then send messages to the farmer via sms of what their next steps should be',
+    '       -Run on virtual environments through Factory so there\'s no physical overhead for farmers and faster data processing',
+    "<br>",
+    'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/jaromero3rd/audio_signaling" target="_blank">Repository</a>',
+    "<br>"
+  ],
   portfolio = [
     "<br>",
     '<span class="command">Portfolio Website</span>',

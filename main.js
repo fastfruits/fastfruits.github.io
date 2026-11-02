@@ -160,6 +160,9 @@ function commander(cmd) {
         case "sheepfinder":
             writeLines(sheep, "color2 margin", 50)
             break
+        case "wheat":
+            writeLines(WebGLShaderPrecisionFormat, "color2 margin", 50)
+            break
         case "history":
             addLine("<br>", "", 0)
             writeLines(commands, "color2", 50)
