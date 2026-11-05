@@ -107,6 +107,10 @@ activities = [
 
 internships = [
   "<br>",
+  '<a class="command">Citizens Bank</a> - Automation Developer Co-op',
+  "<br>",
+  "   - Joining the automation engineering team in the spring to develop scripts and tooling that streamlines internal banking operations",
+  "<br>",
   '<a class="command" href="seoneeded.com" target="_blank">SEONeeded</a> - Search Engine Optimization Assistant Intern --> SEO and GEO Assistant',
   "<br>",
   "   - Returned to SEONeeded in Oct 2025 after my old boss reached out about an opportunity, and I took it",
