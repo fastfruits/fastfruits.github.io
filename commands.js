@@ -127,11 +127,11 @@ internships = [
 
 projects = [
   "<br>",
-  '<a class="command" id="sheep" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(sheep, \'\', 80)">SheepFinder</a>        crowd powered solution for lost animals',
+  '<a class="command" id="sheep" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(sheep, \'\', 80)">SheepFinder</a>                 crowd powered solution for lost animals',
   '<a class="command" id="portfolio" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(portfolio, \'\', 80)">Portfolio Website</a>           this website',
   '<a class="command" id="aiAPI" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(aiAPI, \'\', 80)">AI Personality</a>              AI personality chatbot',
   '<a class="command" id="ai" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(ai, \'\', 80)">AI Text-Transcriber</a>         written to digital text converter',
-  '<a class="command" id="benchmark" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(wheat, \'\', 80)">Bro Look At My Wheat</a>            HackHarvard project to assist farmers in crop maintenance',
+  '<a class="command" id="benchmark" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(wheat, \'\', 80)">Bro Look At My Wheat</a>        HackHarvard project to assist farmers in crop maintenance',
   '<a class="command" id="neural" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(neural, \'\', 80)">Neural Network</a>              Neural network project with NumPy and propagation',
   '<a class="command" id="rpg" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(rpg, \'\', 80)">Medieval RPG</a>                GameJam 2D RPG',
   '<a class="command" id="benchmark" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(energy, \'\', 80)">Energy Education</a>            class project to teach kids about energy conservation',
