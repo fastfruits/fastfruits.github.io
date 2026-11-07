@@ -6,6 +6,22 @@ var terminal = getEl("terminal")
 var mainContent = getEl("main-content")
 var body = getEl("body")
 
+registerCommands()
+
+// One listener for every command link on the page. It lives on #terminal,
+// which `clear` empties but never replaces, so it survives a clear. Links with
+// a real href carry no data-cmd and fall straight through to the browser.
+terminal.addEventListener("click", function (event) {
+    var hit = event.target.closest("[data-cmd]")
+    if (!hit) {
+        return
+    }
+    event.preventDefault()
+    var name = hit.getAttribute("data-cmd")
+    addLine("X:\\Users\\Guest> " + name, "no-animation", 0)
+    commander(name)
+})
+
 var SUPABASE_URL = "https://zkodgtygleehzklkjsvc.supabase.co"
 var SUPABASE_ANON_KEY = "sb_publishable_zjID95Jk3779QiYrj_fPWw_ltxakTQk"
 var COMMENT_COOLDOWN_MS = 20000
@@ -91,6 +107,8 @@ function commander(cmd) {
     var trimmedCmd = cmd.trim()
     var normalizedCmd = trimmedCmd.toLowerCase()
 
+    // Stays ahead of the registry: the match is on the lowercased string but
+    // the argument keeps its original case.
     if (normalizedCmd.startsWith("comment ")) {
         trackEvent("conversation_comment_attempted", {
             channel: "terminal"
@@ -99,115 +117,15 @@ function commander(cmd) {
         return
     }
 
-    switch (normalizedCmd) {
-        case "help":
-            writeLines(help, "color2 margin", 50)
-        break
-        case "whois":
-            writeLines(whois, "color2 margin", 50)
-        break
-        case "techstack":
-            writeLines(skills, "color2 margin", 50)
-        break
-        case "activities":
-            writeLines(activities, "color2 margin",50)
-        break
-        case "internships":
-            writeLines(internships, "color2 margin", 50)
-        break
-        case "socials":
-            writeLines(socials, "color2 margin", 50)
-        break
-        case "projects":
-            writeLines(projects, "color2 margin", 50)
-        break
-        case "ai":
-            writeLines(ai, "color2 margin", 50)
-        break
-        case "av":
-            writeLines(av, "color2 margin", 50)
-        break
-        case "rpg":
-            writeLines(rpg, "color2 margin", 50)
-        break
-        case "benchmark":
-            writeLines(benchmark, "color2 margin", 50)
-        break
-        case "portfolio":
-            writeLines(portfolio, "color2 margin", 50)
-        break
-        case "aiapi":
-            writeLines(aiAPI, "color2 margin", 50)
-        break
-        case "energy":
-            writeLines(energy, "color2 margin", 50)
-        break
-        case "neural":
-            writeLines(neural, "color2 margin", 50)
-        break
-        case "comments":
-            trackEvent("conversation_comments_viewed", {
-                channel: "terminal"
-            })
-            showComments()
-        break
-        case "wateralarm":
-            writeLines(wateralarm, "color2 margin", 50)
-        break
-        case "sanitizer":
-            writeLines(sanitizer, "color2 margin", 50)
-        break
-        case "sheepfinder":
-            writeLines(sheep, "color2 margin", 50)
-            break
-        case "wheat":
-            writeLines(WebGLShaderPrecisionFormat, "color2 margin", 50)
-            break
-        case "history":
-            addLine("<br>", "", 0)
-            writeLines(commands, "color2", 50)
-            addLine("<br>", "command", 80 * commands.length + 50)
-        break
-        case "clear":
-            setTimeout(function() {
-            terminal.innerHTML = '<a id="before"></a>'
-            before = document.getElementById("before")
-            }, 1)
-        break
-        case "banner":
-            writeLines(getResponsiveBanner(), "banner-line", 50)
-        break
-        case "linkedin":
-            addLine("<br>")
-            addLine("Opening LinkedIn...", "color2", 0)
-            addLine("<br>")
-            newTab(linkedin)
-        break
-        case "github":
-            addLine("<br>")
-            addLine("Opening GitHub...", "color2", 0)
-            addLine("<br>")
-            newTab(github)
-        break
-        case "light":
-            addLine("<br>")
-            writeLines(light, "color2", 0)
-            addLine("<br>")
-            body.classList.add("light")
-        break
-        case "dark":
-            writeLines(dark, "color2", 0)
-            body.classList.remove("light")
-        break
-        case "resume":
-            writeLines(resume, "color2", 0)
-        break
-        default:
-            addLine("<br>")
-            addLine("<span class=\"inherit\">Command not found. For a list of commands, type <span class=\"command\">'help'</span>.</span>", "error", 100)
-            addLine("<br>")
-        break
+    var entry = resolveCommand(normalizedCmd)
+    if (entry) {
+        entry.run()
+        return
     }
+
+    addLine("<br>")
+    addLine("<span class=\"inherit\">Command not found. For a list of commands, type <span class=\"command\">'help'</span>.</span>", "error", 100)
+    addLine("<br>")
 }
 
 function newTab(link) {
@@ -249,11 +167,6 @@ function writeLines(name, style, time) {
 
 function getEl(elid) {
     return document.getElementById(elid)
-}
-
-function init() {
-    cursor = getEl("cursor")
-    cursor.style.left = "0px"
 }
 
 function newLineBR(txt) {

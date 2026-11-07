@@ -1,27 +1,397 @@
-var linkedin = "https://www.linkedin.com/in/nahenry06/"
-var github = "https://github.com/fastfruits"
-var instagram = "https://instagram.com/n.henry06"
-var email = "mailto:nicholasahenry06@gmail.com"
-var twitter = "https://x.com/nhenrydev"
+// Terminal command machinery: helpers, renderers, and the command registry.
+//
+// The content itself lives in content.js. Everything here turns that data into
+// the arrays of HTML line strings that writeLines() in main.js consumes, and
+// registers the commands that render them.
+//
+// Load-order rule: this file runs before main.js, so nothing here may call
+// addLine/writeLines/trackEvent at load time. Every such call sits inside a
+// run() body, which only fires once the user types or clicks.
 
-help = [
-  "<br>",
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(whois, \'color2\', 50)">whois</a>          who is Nicholas Henry?',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(resume, \'color2\', 50)">resume</a>         my resume',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(skills, \'color2\', 50)">techstack</a>      languages, frameworks, systems',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(activities, \'color2\', 50)">activities</a>     clubs and other',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(internships, \'color2\', 50)">internships</a>    experience',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(projects, \'color2\', 50)">projects</a>       my projects',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> comments\', \'no-animation\', 0); commander(\'comments\')">comments</a>       view and add comments to this site',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(socials, \'color2\', 50)">socials</a>        display my social links',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(history, \'color2\', 50)">history</a>        view command history',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> light\', \'no-animation\', 0); commander(\'light\')">light</a>/<a class="command" onclick="addLine(\'X:\\Users\\Guest> dark\', \'no-animation\', 0); commander(\'dark\')">dark</a>     change the theme',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> banner\', \'no-animation\', 0); commander(\'banner\')">banner</a>         display the header',
-  '<a class="command" onclick="addLine(\'X:\\Users\\Guest> clear\', \'no-animation\', 0); commander(\'clear\')">clear</a>          clear the terminal',
-  "<br>",
+const BR = "<br>"
+
+// Column at which the description starts in the two index listings. Kept as
+// explicit values because they are a visual choice, with the widest label plus
+// a two-space gutter as the floor so a long title can never collide.
+const HELP_COLUMN = 15
+const PROJECT_COLUMN = 28
+const LEGEND_GAP = 11
+
+const BULLET = "     -"
+const CONT = "      "
+const ENTRY_BULLET = "   - "
+const ENTRY_CONT = "     "
+const SKILL_ITEM = "   -"
+const SKILL_NOTE = "         *"
+const REPO_PREFIX = "Check out the code here on my GitHub -----> "
+
+
+// --- helpers ----------------------------------------------------------------
+
+// Only attribute values get escaped. Body text is authored prose and is passed
+// through as-is, exactly as the hand-written arrays did.
+function attr(value) {
+  return String(value == null ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+}
+
+// A link that dispatches a command. main.js has one delegated listener on
+// #terminal that picks these up, so there is no inline handler to escape.
+function cmdLink(name, label) {
+  return '<a class="command" data-cmd="' + attr(name) + '">' + label + "</a>"
+}
+
+function linkOut(url, label) {
+  return (
+    '<a class="command" href="' + attr(url) + '" target="_blank" rel="noopener noreferrer">' +
+    label +
+    "</a>"
+  )
+}
+
+// addLine() turns each pair of spaces into &nbsp;&nbsp; and leaves a lone
+// trailing space, so N spaces render as N columns for any N. Padding is exact.
+// Never emit two consecutive spaces inside a tag: the same pass would rewrite
+// them and corrupt the attribute.
+function indexRow(html, label, description, column) {
+  return html + " ".repeat(Math.max(column - label.length, 2)) + description
+}
+
+function columnFor(entries, minimum) {
+  return entries.reduce(function (widest, entry) {
+    return Math.max(widest, entry.label.length + 2)
+  }, minimum)
+}
+
+// A bullet is a string, or an array of strings for a hand-wrapped one whose
+// continuation lines indent to match. "" is a blank line.
+function renderBullets(bullets, bulletPrefix, continuationPrefix) {
+  const lines = []
+  bullets.forEach(function (bullet) {
+    if (bullet === "") {
+      lines.push(BR)
+      return
+    }
+    const parts = Array.isArray(bullet) ? bullet : [bullet]
+    parts.forEach(function (part, index) {
+      lines.push((index === 0 ? bulletPrefix : continuationPrefix) + part)
+    })
+  })
+  return lines
+}
+
+
+// --- renderers --------------------------------------------------------------
+
+function renderProject(project) {
+  const lines = [BR, '<span class="command">' + (project.heading || project.title) + "</span>", BR]
+  lines.push.apply(lines, renderBullets(project.bullets, BULLET, CONT))
+  lines.push(BR)
+  if (project.demo) {
+    lines.push("Click for a " + cmdLink(demoCommand(project), "Demo"))
+  }
+  if (project.site) {
+    lines.push("<span>Visit the site " + linkOut(project.site, "here") + ".</span>")
+  }
+  if (project.repo) {
+    lines.push(REPO_PREFIX + linkOut(project.repo, "Repository"))
+  }
+  lines.push(BR)
+  return lines
+}
+
+function renderDemo(project) {
+  return [BR, '<video controls src="' + attr(project.demo) + '">', BR]
+}
+
+function renderProjectIndex() {
+  const entries = listCommands("project")
+  const column = columnFor(entries, PROJECT_COLUMN)
+  const lines = [BR]
+  entries.forEach(function (entry) {
+    lines.push(indexRow(cmdLink(entry.name, entry.label), entry.label, entry.help, column))
+  })
+  lines.push(BR)
+  // The legend is generated from the same list as the rows above it, so it can
+  // no longer advertise a command that does not dispatch.
+  lines.push(
+    '<span class="command">Commands(or clickable btw^):</span>' +
+      " ".repeat(LEGEND_GAP) +
+      entries
+        .map(function (entry) { return entry.name })
+        .join(", ")
+  )
+  lines.push(BR)
+  return lines
+}
+
+function renderHelp() {
+  const entries = []
+  HELP_ORDER.forEach(function (name) {
+    const entry = registry.get(name)
+    if (entry && entries.indexOf(entry) === -1) {
+      entries.push(entry)
+    }
+  })
+  // Anything registered for the help listing but left out of HELP_ORDER still
+  // shows up, so a new command cannot go missing from help.
+  listCommands("main").forEach(function (entry) {
+    if (entries.indexOf(entry) === -1) {
+      entries.push(entry)
+    }
+  })
+
+  const column = columnFor(entries, HELP_COLUMN)
+  const lines = [BR]
+  entries.forEach(function (entry) {
+    lines.push(indexRow(entry.html || cmdLink(entry.name, entry.label), entry.label, entry.help, column))
+  })
+  lines.push(BR)
+  return lines
+}
+
+// Shared by internships and activities, which have the same shape.
+function renderEntries(list) {
+  const lines = [BR]
+  list.forEach(function (item) {
+    const name = item.url ? linkOut(item.url, item.org) : '<a class="command">' + item.org + "</a>"
+    lines.push(name + " - " + item.role)
+    lines.push(BR)
+    lines.push.apply(lines, renderBullets(item.bullets, ENTRY_BULLET, ENTRY_CONT))
+    lines.push(BR)
+  })
+  return lines
+}
+
+function renderSkills() {
+  const lines = [BR]
+  SKILL_GROUPS.forEach(function (group) {
+    lines.push('<span class="command">' + group.heading + "</span>")
+    lines.push(BR)
+    group.items.forEach(function (item) {
+      lines.push(SKILL_ITEM + item.name + (item.notes.length ? ":" : ""))
+      item.notes.forEach(function (note) {
+        lines.push(SKILL_NOTE + note)
+      })
+    })
+    lines.push(BR)
+  })
+  return lines
+}
+
+function renderSocials() {
+  const lines = [BR]
+  SOCIALS.forEach(function (social) {
+    lines.push(linkOut(social.url, social.label))
+  })
+  lines.push(BR)
+  return lines
+}
+
+
+// --- registry ---------------------------------------------------------------
+
+// A Map, so listing order is insertion order no matter what the keys look like.
+// Aliases map to the same object as their canonical name, which is how
+// listCommands() filters them back out.
+const registry = new Map()
+
+function defineCommand(name, spec) {
+  const entry = {
+    name: name,
+    label: spec.label || name,
+    help: spec.help || "",
+    group: spec.group || "",
+    html: spec.html || "",
+    run: spec.run,
+  }
+  registry.set(name, entry)
+  ;(spec.aliases || []).forEach(function (alias) {
+    registry.set(alias, entry)
+  })
+  return entry
+}
+
+function resolveCommand(input) {
+  return registry.get(String(input == null ? "" : input).trim().toLowerCase()) || null
+}
+
+function listCommands(group) {
+  const seen = []
+  registry.forEach(function (entry, key) {
+    if (entry.group === group && key === entry.name && seen.indexOf(entry) === -1) {
+      seen.push(entry)
+    }
+  })
+  return seen
+}
+
+function demoCommand(project) {
+  return project.id + "-demo"
+}
+
+// Order of the help listing. A name with no registered command is skipped, so
+// help cannot advertise something that does not exist.
+const HELP_ORDER = [
+  "whois",
+  "resume",
+  "techstack",
+  "activities",
+  "internships",
+  "projects",
+  "comments",
+  "socials",
+  "history",
+  "theme",
+  "banner",
+  "clear",
 ]
 
-whois = [
+function registerCommands() {
+  PROJECTS.forEach(function (project) {
+    if (project.status === "wip") {
+      return
+    }
+    defineCommand(project.id, {
+      group: "project",
+      label: project.title,
+      help: project.blurb,
+      aliases: project.aliases,
+      run: function () { writeLines(renderProject(project), "color2 margin", 50) },
+    })
+    if (project.demo) {
+      defineCommand(demoCommand(project), {
+        run: function () { writeLines(renderDemo(project), "color2 margin", 50) },
+      })
+    }
+  })
+
+  defineCommand("help", {
+    run: function () { writeLines(renderHelp(), "color2 margin", 50) },
+  })
+  defineCommand("whois", {
+    group: "main",
+    help: "who is Nicholas Henry?",
+    run: function () { writeLines(whois, "color2 margin", 50) },
+  })
+  defineCommand("resume", {
+    group: "main",
+    help: "my resume",
+    run: function () { writeLines(resume, "color2", 0) },
+  })
+  defineCommand("techstack", {
+    group: "main",
+    help: "languages, frameworks, systems",
+    run: function () { writeLines(renderSkills(), "color2 margin", 50) },
+  })
+  defineCommand("activities", {
+    group: "main",
+    help: "clubs and other",
+    run: function () { writeLines(renderEntries(ACTIVITIES), "color2 margin", 50) },
+  })
+  defineCommand("internships", {
+    group: "main",
+    help: "experience",
+    run: function () { writeLines(renderEntries(EXPERIENCES), "color2 margin", 50) },
+  })
+  defineCommand("projects", {
+    group: "main",
+    help: "my projects",
+    run: function () { writeLines(renderProjectIndex(), "color2 margin", 50) },
+  })
+  defineCommand("comments", {
+    group: "main",
+    help: "view and add comments to this site",
+    run: function () {
+      trackEvent("conversation_comments_viewed", {
+        channel: "terminal"
+      })
+      showComments()
+    },
+  })
+  defineCommand("socials", {
+    group: "main",
+    help: "display my social links",
+    run: function () { writeLines(renderSocials(), "color2 margin", 50) },
+  })
+  defineCommand("history", {
+    group: "main",
+    help: "view command history",
+    run: function () {
+      addLine(BR, "", 0)
+      writeLines(commands, "color2", 50)
+      addLine(BR, "command", 80 * commands.length + 50)
+    },
+  })
+  defineCommand("banner", {
+    group: "main",
+    help: "display the header",
+    run: function () { writeLines(getResponsiveBanner(), "banner-line", 50) },
+  })
+  defineCommand("clear", {
+    group: "main",
+    help: "clear the terminal",
+    run: function () {
+      setTimeout(function () {
+        terminal.innerHTML = '<a id="before"></a>'
+        before = document.getElementById("before")
+      }, 1)
+    },
+  })
+
+  // light and dark dispatch separately but share one row in help, so the row
+  // is registered as its own listing-only entry.
+  defineCommand("light", {
+    run: function () {
+      addLine(BR)
+      writeLines(light, "color2", 0)
+      addLine(BR)
+      body.classList.add("light")
+    },
+  })
+  defineCommand("dark", {
+    run: function () {
+      writeLines(dark, "color2", 0)
+      body.classList.remove("light")
+    },
+  })
+  defineCommand("theme", {
+    group: "main",
+    label: "light/dark",
+    help: "change the theme",
+    html: cmdLink("light", "light") + "/" + cmdLink("dark", "dark"),
+    run: function () { commander(body.classList.contains("light") ? "dark" : "light") },
+  })
+
+  defineCommand("linkedin", {
+    run: function () {
+      addLine(BR)
+      addLine("Opening LinkedIn...", "color2", 0)
+      addLine(BR)
+      newTab(linkedin)
+    },
+  })
+  defineCommand("github", {
+    run: function () {
+      addLine(BR)
+      addLine("Opening GitHub...", "color2", 0)
+      addLine(BR)
+      newTab(github)
+    },
+  })
+}
+
+
+// --- prose ------------------------------------------------------------------
+//
+// These occur once each and are hand-tuned, so they stay as literal line
+// arrays rather than gaining a schema that only one caller would ever use.
+
+const whois = [
   "<br>",
   "Hello my name is Nicholas Henry,",
   '<img src="resources/me.png" width=200 height=300>',
@@ -44,331 +414,37 @@ whois = [
   "<br>",
 ]
 
-skills = [
-  "<br>",
-  '<span class="command">Programming Languages</span>',
-  "<br>",
-  "   -Python: ",
-  "         *Learned through videos and projects",
-  "         *Skilled in machine learning, web scraping, automation, and robotics",
-  "         *Use in both of my clubs NER and SEDS for different applications",
-  "   -Java: ",
-  "         *Learned through my AP Computer Science class and the projects",
-  "         *Experienced in developing computer applications, games, and other types of programs",
-  "<br>",
-  '<span class="command">Web Development</span>',
-  "<br>",
-  "   -HTML & CSS: ",
-  "         *Learned through videos and creating websites like this and my internship for AICamp.org",
-  "         *Strong understanding of web design principles and responsive design techniques",
-  "   -JavaScript: ",
-  "         *Learned through videos and creating websites like this and my internship for AICamp.org",
-  "         *Adept at creating dynamic and interactive web applications using JavaScript",
-  "         *Also comfortable working with frameworks and libraries like React and Vite",
-  "<br>",
-  '<span class="command">Certifications</span>',
-  "   -CAD and 3D Printing",
-  "         *Learned these skills through engineering classes and applied them throughout projects like the AV car and sanitizer",
-  "         *Have certifications for programs like Fusion360, OnShape, and MakerBot 3D printers",
-  "   -Engineering",
-  "         *Learned engineering skills and practices also through my engineering classes at school and through projects",
-  "         *Certified by the RECF(Robotics Education & Competition Foundation) for Robotics and Pre-Engineering",
-  "<br>",
-  '<span class="command">Future Skills To Learn</span>',
-  "<br>",
-  "   -C++",
-  "   -ROS 2",
-  "   -Mobile App Development",
-  "<br>"
-]
-
-activities = [
-  "<br>",
-  '<a class="command">Northeastern Electric Racing (NER)</a> - SWE for the simulation team',
-  "<br>",
-  "   - Working on a team of two to develop a multi-body simulation tool for NER to test and examine changes to",
-  "     vehicle, suspension, and tire variables and their effect on speed and times of the car",
-  "   - Use Python as the backend to do all the physics and Dash Plotly to display to a site to easily see all graphs and metrics",
-  "   - Learned to work with other departments to understand what each one needed in order to better develop the car they were building",
-  "<br>",
-  '<a class="command">Northeastern Satellite Lab (NSL)</a> - SWE for the telemetry team',
-  "   - Working in the telemetry, tracking, and control manager system for the satellite which means working with networking, SDRs, and OBCs",
-  "   - Write F prime code (C++) for all the systems on the satellite for extra redundancy and safety",
-  "<br>",
-  '<a class="command">Students for the Exploration and Discovery of Space</a> - SWE for NEST (Network Exploration Swarm Toolkit)',
-  "<br>",
-  "   - NEST is a project to create a swarm of miniature C.O.B.R.A. (Crater Observing Bio-inspired Rolling Articulator)",
-  "    \"snake\" robots to explore and develop multi-agent collaboration in order to complete teamwork-based tasks",
-  "   - Specifically working on the basic controls of the robots and imitation learning for the COBRA to work “together” with a",
-  "     robotic grabber arm from ROBOTIS to complete tasks together autonomously",
-  "   - Used Python to program the robots and simulation software and ROS 2 to communicate with sensors and relay information and instructions",
-  "<br>"
-]
-
-internships = [
-  "<br>",
-  '<a class="command">Citizens Bank</a> - Automation Developer Co-op',
-  "<br>",
-  "   - Joining the automation engineering team in the spring to develop scripts and tooling that streamlines internal banking operations",
-  "<br>",
-  '<a class="command" href="seoneeded.com" target="_blank">SEONeeded</a> - Search Engine Optimization Assistant Intern --> SEO and GEO Assistant',
-  "<br>",
-  "   - Returned to SEONeeded in Oct 2025 after my old boss reached out about an opportunity, and I took it",
-  "   - Took on more responsibilities and now work directly with 15+ clients across the South Florida region in all sorts of industries",
-  "<br>",
-  "   - Worked as an SEO assistant intern for SEONeeded through the MDCPS Summer Internship Program",
-  "   - Learned a lot about how search engines prioritize results and how to boost sites to the top of the rankings, both organically and locally",
-  "   - Used tools like WordPress, SEOMoz, and Meta Business Suite for the tasks I was assigned",
-  "<br>",
-  '<a class="command" href="aicamp.org" target="_blank">AICamp</a> - Web Developer Intern',
-  "<br>",
-  "   - Worked as a web developer intern for AICamp, where I built new features for the website and helped organize it",
-  "   - Built a new part of the site to host their computer vision AI camps beyond just the summer",
-  "   - Served as manager of the five-person team, where I led update meetings and coordinated the coding and content teams",
-  "   - Used HTML, Tailwind CSS, JavaScript, Vite.js, and React.js to create the site's additions",
-  "<br>"
-]
-
-projects = [
-  "<br>",
-  '<a class="command" id="sheep" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(sheep, \'\', 80)">SheepFinder</a>                 crowd powered solution for lost animals',
-  '<a class="command" id="portfolio" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(portfolio, \'\', 80)">Portfolio Website</a>           this website',
-  '<a class="command" id="aiAPI" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(aiAPI, \'\', 80)">AI Personality</a>              AI personality chatbot',
-  '<a class="command" id="ai" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(ai, \'\', 80)">AI Text-Transcriber</a>         written to digital text converter',
-  '<a class="command" id="benchmark" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(wheat, \'\', 80)">Bro Look At My Wheat</a>        HackHarvard project to assist farmers in crop maintenance',
-  '<a class="command" id="neural" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(neural, \'\', 80)">Neural Network</a>              Neural network project with NumPy and propagation',
-  '<a class="command" id="rpg" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(rpg, \'\', 80)">Medieval RPG</a>                GameJam 2D RPG',
-  '<a class="command" id="benchmark" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(energy, \'\', 80)">Energy Education</a>            class project to teach kids about energy conservation',
-  '<a class="command" id="sanitizer" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(sanitizer, \'\', 80)">Auto Sanitizer Dispenser</a>    class project for a contactless sanitizer dispenser',
-  '<a class="command" id="av" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(av, \'\', 80)">Ten80 AV Car</a>                for my high school\'s Ten80 AV car',
-  '<a class="command" id="benchmark" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(benchmark, \'\', 80)">Human Benchmark Test</a>        Hack-A-Thon submission of a human benchmark test',
-  //'<a class="command" id="jarvis" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(jarvis, \'\', 80)">Jarvis Discord Bot[WIP]</a>',
-  //'<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(news, \'\', 80)">Daily News Compiler[WIP]</a>',
-  //'<a class="command" id="news" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(wateralarm, \'\', 80)">Water Alarm Clock[WIP]</a>',
-  "<br>",
-  '<span class="command">Commands(or clickable btw^):</span>           wheat, sheep, portfolio, aiAPI, ai, neural, rpg, av, energy, benchmark, sanitizer',
-  "<br>"
-]
-
-socials = [
-  "<br>",
-  '<a class="command" href="' + github + '" target="_blank">github</a>',
-  '<a class="command" href="' + linkedin + '" target="_blank">linkedin</a>',
-  '<a class="command" href="' + twitter + '" target="_blank">X (fka twitter)</a>',
-  '<a class="command" href="' + instagram + '" target="_blank">instagram</a>',
-  '<a class="command" href="' + email + '" target="_blank">email</a>',
-  "<br>"
-] 
-
-projectCatalog = [
-  wheat = [
-    "<br>",
-    '<span class="command">Bro Look At My Wheat (HackHarvard)</span>',
-    "<br>",
-    '       -Trained a drone to autonomously search for wheat with a YoloV8 model, determine its close, then return to an april tag',
-    '       -Built a data pipeline that took the images and weather data gathered and matched them to satellite info in the area and analyzed',
-    '        it using chalk data agents to then send messages to the farmer via sms of what their next steps should be',
-    '       -Run on virtual environments through Factory so there\'s no physical overhead for farmers and faster data processing',
-    "<br>",
-    'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/jaromero3rd/audio_signaling" target="_blank">Repository</a>',
-    "<br>"
-  ],
-  portfolio = [
-    "<br>",
-    '<span class="command">Portfolio Website</span>',
-    "<br>",
-    '       -This very website, which I programmed with HTML/CSS and JavaScript to show off my portfolio and web development skills like responsiveness and interactivity.',
-    "        With this project I deepened my knowledge of HTML, CSS, and JavaScript and learned how to use them to create a website that is both engaging and functional as a portfolio.",
-    "<br>",
-    'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/Website" target="_blank">Repository</a>',
-    "<br>"
-  ],
-  
-  aiAPI = [
-    "<br>",
-    '<span class="command">AI Personality</span>',
-    "<br>",
-    "       -This is an AI personality chatbot that I created using the OpenAI, Azure, and ElevenLabs APIs. The project was coded in Python and used a range of imports",
-    "        and libraries to tie all the APIs together, creating a chatbot the user could interact with by speaking directly into their microphone.",
-    "        This project taught me a lot about APIs and how to combine them into a compelling project with Python.",
-    " <br>",
-    'Click for a <a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(aiAPIDemo, \'\', 80)">Demo</a>',
-    'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/AI-Personality" target="_blank">Repository</a>',
-    "<br>"
-  ],
-  
-  
-  ai = [
-    "<br>",
-    '<span class="command">AI Text-Transcriber</span>',
-    "<br>",
-    "      -Created and trained an AI model to recognize handwritten text and transcribe it into a .txt file, which could then be converted into an .mp3 file and translated",
-    "       into whatever language the user wants, if it's available through Google's Translate API. The program was written in Python and used TensorFlow to train the model on over 10,000",
-    "       images of handwritten text over a few days.",
-    "<br>",
-    //'Click for a <a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(aiDemo, \'\', 80)">Demo</a>',
-    'Check out the code here on GitHub -----> <a class="command" href="https://github.com/panyang05/Text-Transcriber" target="_blank">Repository</a>',
-    "<br>"
-  ],
-
-  neural = [
-    "<br>",
-    '<span class=""command>Neural Network</span>',
-    "<br>",
-    "     -Quick little neural network project using just NumPy so no Tensorflow or other machine learning frameworks. Wanted to learn about what a network is built out of.",
-    "      Has two layers and uses forward and backward propagation and a simple weight adjustment function to enable learning. Uses the MNIST handwritten numbers dataset and can achieve",
-    "      around a 90% accuracy on its predictions.",
-    "<br>",
-    'Check out the code here on GitHub -----> <a class="command" href="https://github.com/fastfruits/neural-network" target="_blank">Repository</a>',
-    "<br>",
-  ],  
-  
-  rpg = [
-    "<br>",
-    '<span class="command">Medieval RPG</span>',
-    "<br>",
-    "      -A submission for my school coding club's GameJam, where the theme was time. The game, a 2D top-down RPG, was written in Java using game development",
-    "       practices like delta timing, rendering many objects to the screen, and building rudimentary AI for the enemies.",
-    "       It won first place in the competition by an almost unanimous member vote.",
-    "<br>",
-    'Click for a <a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(rpgDemo, \'\', 80)">Demo</a>',
-    'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/Medieval-RPG" target="_blank">Repository</a>',
-    "<br>"
-  ],
-  
-  av = [
-    "<br>",
-    '<span class="command">Ten80 AV Car</span>',
-    "<br>",
-    "     -I joined my school's Ten80 club and became head of the AV car. I coded all the scripts for it to meet the requirements of the Ten80 competition and each of its challenges.",
-    "      We took the car to many competitions, won often, and were invited to the national finals in Charlotte. With this project I learned to combine software and hardware,",
-    "      as I programmed sensors like an odometer, IR, and ultrasonic to make the car fully autonomous in each challenge.",
-    "<br>",
-    'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/AutonomousVehicle_Ten802023-2024" target="_blank">Repository</a>',
-    "</br>"
-  ],
-  
-  benchmark = [
-    "<br>",
-    '<span class="command">Human Benchmark Test</span>',
-    "<br>",
-    "     -A program I created with Java for my school coding club's Hack-A-Thon, where the theme was \"test\". Building it for the competition taught me about working with",
-    "      user input and aggregating data to generate scores and other info for users. It won first place in the competition by popular vote.",
-    "<br>",
-    'Click for a <a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(benchmarkDemo, \'\', 80)">Demo</a>',
-    'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/Benchmark-Test" target="_blank">Repository</a>',
-    "<br>"
-  ],
-  
-  sanitizer = [
-  "</br>",
-  '<span class="command">Automatic Hand Sanitizer Dispenser</span>',
-  "</br>",
-  "      -A project in my high school engineering class where we were tasked with using any means necessary to create a contactless sanitizer dispenser.",
-  "      -While other groups used simple circuits, my group pushed further by using more advanced servos and an Arduino.",
-  "      -The Arduino was programmed alongside an ultrasonic sensor that would detect whether a hand was present and even dispense different amounts based on distance.",
-  "      -We 3D printed a housing for everything to give it a cleaner look.",
-  "      -Through this project I learned more about 3D printing, electronics, and Arduino while working on a team that pursued creative and advanced solutions.",
-  "</br>",
-  'Check out the code here on my Github -----> <a class="command" href="https://github.com/fastfruits/AutoSanitizerDispenser" target="_blank">Repository</a>',
-  "</br>"
-  ],
-  
-  energy = [
-    "<br>",
-    '<span class="command">Energy Education</span>',
-    "<br>",
-    "     -A Cornerstone of Engineering class project that I built to present at an end-of-semester expo, where kids aged 7-11 playtested it",
-    "     -Built an online quiz hosted on a Flask server that communicated over serial with a Raspberry Pi Pico to read button presses and send LED signals",
-    "     -Received high praise from users for its responsiveness, functionality, and educational value",
-    "<br>",
-    '<span>Click for a <a class="command" onclick="addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(energyDemo, \'\', 80)">Demo</a></span>',
-    'Check out the code here on my Github -----> <a class="command" href="https://github.com/fastfruits/Energy-Education" target="_blank">Repository</a>',
-  ],
-  
-  sheep = [
-    "<br>",
-    '<span class="command">SheepFinder</span>',
-    "<br>",
-    "     -After studying abroad in Northern Ireland, I spotted a problem: farmers and runaway sheep. I built a web app to help farmers tackle it.",
-    "     -Community members who come across a runaway sheep or other animals can upload a photo and describe its markings. Farmers who are signed up and have animals with",
-    "     those markings are then notified of the animals and its location so they can bring it back to the farm.",
-    "     -I built this app with Next.js and React and in collaboration with Claude Code a lot in order to create the database and frontend.",
-    "<br>",
-    '<span>Visit the site <a class="command" href="sheepfinder.xyz" target="_blank")">here</a>.</span>',
-    'Check out the code here on my GitHub -----> <a class="command" href="https://github.com/fastfruits/sheep-finder" target="_blank">Repository</a>',
-    "<br>"
-  ],
-]
-
-demos = [
-  aiDemo = [
-    "<br>",
-    '<video controls src="resources/sample.mp4">',
-    "<br>",
-  ],
-  
-  rpgDemo = [
-    "<br>",
-    '<video controls src="resources/medievalDemo.mp4">',
-    "<br>",
-  ],
-  
-  benchmarkDemo = [
-    "<br>",
-    '<video controls src="resources/benchmarkDemo.mp4">',
-    "<br>",
-  ],
-  
-  aiAPIDemo = [
-    "<br>",
-    '<video controls src="resources/sample.mp4">',
-    "<br>",
-  ],
-]
-
-resume = [
+const resume = [
   "<br>",
   '<span>Download my latest resume here --> <a class="command" href="/resume.pdf" download target="_blank">(PDF)</a><span>',
   "<br>",
 ]
 
-banner = [
-  '<span class="index">NHenry.dev [Version 3.1.27]<span>',
-  ,'<span class="index">Nicholas Henry (NH) Not A Corporation. All rights reserved.</span>',
-  ,"                              =",
-  ,"                              ==",
-  ,"                             ===",
-  ,"                            ===",
-  ,"                          ====",
-  ,"                        =====    ==",
-  ,"                      ======  ===",
-  ,"                    =====  ====",
-  ,"                  =====   ===",
-  ,"                 =====   ====",
-  ,"                 ====    =====",
-  ,"                  ====    =====",
-  ,"                    ===    ====",
-  ,"                      ==   ====       ***",
-  ,"            ****#         ===           ***#",
-  ,"           **************************    ***",
-  ,"               ******************       ***#",
-  ,"              ***                      ***",
-  ,"              ******************** ****#",
-  ,"                   **********",
-  ,"                ****                                " + '<span class="color2">__                                     _            ',
-  ,"        ******  ****************                 " + '<span class="color2">/\\ \\ \\/\\  /\\___ _ __  _ __ _   _       __| | _____   __</span>',
-  ,"      *****          #***#*           ***       " + '<span class="color2">/  \\/ / /_/ / _ \\ \'_ \\| \'__| | | |     / _` |/ _ \\ \\ / /',
-  ,"       *************###***************** **    " + '<span class="color2">/ /\\  / __  /  __/ | | | |  | |_| |  _ | (_| |  __/\\ V / ',
-  ,"            *********************** #*****     " + '<span class="color2">\\_\\ \\/\\/ /_/ \\___|_| |_|_|   \\__, | (_) \\__,_|\\___| \\_/  ',
-  ,"             ************************                                       " + '<span class="color2">|___/                   ',
-  '<span class="color2">Welcome to my interactive web terminal.</span>',
-  "<span class=\"color2\">For a list of available commands, type (or click) '</span><a class=\"command\" onclick=\"addLine(\'X:\\Users\\Guest> \' + command.innerHTML, \'no-animation\', 0); writeLines(help, \'color2\', 50)\">help</a><span class=\"color2\">'.</span>",
+const light = [
+  "<br>",
+  "<span>Terminal set to light mode!</span>",
+  "<br>"
 ]
 
-bannerMobile = [
-  '<span class="index">NHenry.dev [Version 3.1.27]<span>',
+const dark = [
+  "<br>",
+  "<span>Terminal set to dark mode!</span>",
+  "<br>"
+]
+
+// The rocket art is identical in both banners, so it is defined once. Only the
+// tail rows differ: the desktop variant splices the wordmark onto the right of
+// the art, at offsets that were eyeballed against the art's ragged edge, so
+// those six rows stay literal rather than computed.
+//
+// index.html carries a fourth copy of the wordmark as the pre-load splash. It
+// has to be static markup, because it exists to show before any JS runs.
+const BANNER_HEAD = [
+  '<span class="index">NHenry.dev [Version 3.1.27]</span>',
   '<span class="index">Nicholas Henry (NH) Not A Corporation. All rights reserved.</span>',
+]
+
+const LOGO_MARK = [
   "                              =",
   "                              ==",
   "                             ===",
@@ -389,12 +465,28 @@ bannerMobile = [
   "              ***                      ***",
   "              ******************** ****#",
   "                   **********",
+]
+
+const banner = BANNER_HEAD.concat(LOGO_MARK, [
+  "                ****                                " + '<span class="color2">__                                     _            ',
+  "        ******  ****************                 " + '<span class="color2">/\\ \\ \\/\\  /\\___ _ __  _ __ _   _       __| | _____   __</span>',
+  "      *****          #***#*           ***       " + '<span class="color2">/  \\/ / /_/ / _ \\ \'_ \\| \'__| | | |     / _` |/ _ \\ \\ / /',
+  "       *************###***************** **    " + '<span class="color2">/ /\\  / __  /  __/ | | | |  | |_| |  _ | (_| |  __/\\ V / ',
+  "            *********************** #*****     " + '<span class="color2">\\_\\ \\/\\/ /_/ \\___|_| |_|_|   \\__, | (_) \\__,_|\\___| \\_/  ',
+  "             ************************                                       " + '<span class="color2">|___/                   ',
+], [
+  '<span class="color2">Welcome to my interactive web terminal.</span>',
+  '<span class="color2">For a list of available commands, type (or click) \'</span>' + cmdLink("help", "help") + '<span class="color2">\'.</span>',
+])
+
+const bannerMobile = BANNER_HEAD.concat(LOGO_MARK, [
   "                ****",
   "        ******  ****************                 ",
   "      *****          #***#*           ***       ",
   "       *************###***************** **    ",
   "            *********************** #*****     ",
   "             ************************",
+], [
   '<span class="color2">     __                                     _</span>',
   '<span class="color2">  /\\ \\ \\/\\  /\\___ _ __  _ __ _   _       __| | _____   __</span>',
   '<span class="color2"> /  \\/ / /_/ / _ \\ \'_ \\| \'__| | | |     / _` |/ _ \\ \\ / /</span>',
@@ -402,27 +494,8 @@ bannerMobile = [
   '<span class="color2">\\_\\ \\/\\/ /_/ \\___|_| |_|_|   \\__, | (_) \\__,_|\\___| \\_/</span>',
   '<span class="color2">                              |___/</span>',
   "<br>",
+], [
   '<span class="color2">Welcome to my interactive web terminal.</span>',
-  "<span class=\"color2\">For a list of available commands \ntype (or click) '</span><a class=\"command\" onclick=\"addLine('X:\\\\Users\\\\Guest> help', 'no-animation', 0); commander('help')\">help</a><span class=\"color2\">'.</span>",
-]
+  '<span class="color2">For a list of available commands \ntype (or click) \'</span>' + cmdLink("help", "help") + '<span class="color2">\'.</span>',
+])
 
-light = [
-  "<br>",
-  "<span>Terminal set to light mode!</span>",
-  "<br>"
-]
-
-dark = [
-  "<br>",
-  "<span>Terminal set to dark mode!</span>",
-  "<br>"
-]
-
-webtitle = [
-           '<span class="color2">__                                     _            ',
-   '<span class="color2">/\\ \\ \\/\\  /\\___ _ __  _ __ _   _       __| | _____   __</span>',
-  '<span class="color2">/  \\/ / /_/ / _ \\ \'_ \\| \'__| | | |     / _` |/ _ \\ \\ / /',
-     '<span class="color2">/ /\\  / __  /  __/ | | | |  | |_| |  _ | (_| |  __/\\ V / ',
-'<span class="color2">\\_\\ \\/\\/ /_/ \\___|_| |_|_|   \\__, | (_) \\__,_|\\___| \\_/  ',
-                                    '<span class="color2">|___/                   ',
-]
