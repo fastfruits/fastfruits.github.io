@@ -513,3 +513,67 @@ function getTrafficAttribution() {
         campaign: "(not set)"
     }
 }
+
+
+function hasTextSelection() {
+    var selection = window.getSelection()
+    return !!selection && selection.toString().length > 0
+}
+
+function terminalIsReady() {
+    return mainContent.style.display !== "none"
+}
+
+function refocusTexter() {
+    if (!terminalIsReady() || document.activeElement === textarea || hasTextSelection()) {
+        return
+    }
+    textarea.focus({ preventScroll: true })
+}
+
+var usesTouchPointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches
+
+if (!usesTouchPointer) {
+    document.addEventListener("mouseup", function (event) {
+        if (event.target.closest("input, select, button, textarea, [contenteditable]")) {
+            return
+        }
+        setTimeout(refocusTexter, 0)
+    })
+}
+
+window.addEventListener("focus", function () {
+    setTimeout(refocusTexter, 0)
+})
+
+document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) {
+        refocusTexter()
+    }
+})
+
+window.addEventListener("keydown", function (event) {
+    if (!terminalIsReady() || document.activeElement === textarea) {
+        return
+    }
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+        return
+    }
+    if (event.target.closest && event.target.closest("input, select, textarea, [contenteditable]")) {
+        return
+    }
+
+    if (event.key && event.key.length === 1) {
+        textarea.focus({ preventScroll: true })
+        textarea.value += event.key
+        command.innerHTML = newLineBR(textarea.value)
+        event.preventDefault()
+    } else if (event.key === "Backspace") {
+        textarea.focus({ preventScroll: true })
+        textarea.value = textarea.value.slice(0, -1)
+        command.innerHTML = newLineBR(textarea.value)
+        event.preventDefault()
+    } else if (event.key === "Enter" || event.key === "ArrowUp" || event.key === "ArrowDown") {
+        textarea.focus({ preventScroll: true })
+    }
+})
